@@ -1,4 +1,5 @@
-sku,promo
-OIL5W30,20
-FILT001,10
-ADD10,5
+sku,description,type,value
+OIL5W30,Promotion Aid - 20% sur huile moteur 5W30,percentage,20
+OIL5W30,Remise fidélité client,cash,30
+FILT001,Promo filtre entretien moteur,percentage,10
+ADD10,Offre spéciale additif moteur,cash,15

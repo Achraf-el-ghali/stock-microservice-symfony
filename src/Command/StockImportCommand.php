@@ -56,26 +56,30 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
         //la prmier ligne ne represent pas une donne on doit la saute
         fgetcsv($handle);
         //lire le contenu
-        while (($data = fgetcsv($handle)) !== false)//tant que on a pas termine le fichier
+       while (($data = fgetcsv($handle)) !== false) // tant que on a pas termine le fichier
+{
+    if (count($data) < 3) {
+        continue;
+    }
 
-            {
-                   $sku = $data[0];
-                   $quantity = (int)$data[1];
-                  $price = (float)$data[2];
-                  //pour l affichage dans terminal :
-                   $io->text("SKU: $sku | Quantity: $quantity | Price: $price");
+    $sku = $data[0];
+    $quantity = (int)$data[1];
+    $price = (float)$data[2];
 
-             $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
+    //pour l affichage dans terminal :
+    $io->text("SKU: $sku | Quantity: $quantity | Price: $price");
 
-             if (!$stock) {
-                         $stock = new Stock();
-                         $stock->setSku($sku);
-                          }
+    $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
 
-                      $stock->setQuantity($quantity);
-                      $stock->setPrice($price);
+    if (!$stock) {
+        $stock = new Stock();
+        $stock->setSku($sku);
+    }
 
-                     $this->em->persist($stock);
+    $stock->setQuantity($quantity);
+    $stock->setPrice($price);
+
+    $this->em->persist($stock);
 }
              //fermuture du fichier
              fclose($handle);

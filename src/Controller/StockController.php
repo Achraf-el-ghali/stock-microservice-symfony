@@ -32,7 +32,7 @@ public function getStockBySku(string $sku, StockRepository $stockRepository)
         'sku' => $stock->getSku(),
         'price' => $stock->getPrice(),
         'quantity' => $stock->getQuantity(),
-        'promo' => $stock->getPromo(),
+        'promo' => $stock->getPromotions(),
         'finalPrice' => $stock->getFinalPrice()
     ]);
 }

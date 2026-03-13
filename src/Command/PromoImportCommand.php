@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Entity\Promotion;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StockRepository;
@@ -50,22 +51,28 @@ class PromoImportCommand extends Command
 
         while (($data = fgetcsv($handle)) !== false) {
 
-    $sku = $data[0];
-    $promo = (float)$data[1];
+            $sku = $data[0];
+            $description = $data[1];
+            $type = $data[2];
+            $value = (float)$data[3];
 
-    $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
+            $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
 
-    if (!$stock) {
-        $io->warning("SKU not found: $sku");
-        continue;
-    }
+            if (!$stock) {
+                $io->warning("SKU not found: $sku");
+                continue;
+            }
 
-    $stock->setPromo($promo);
+            $promotion = new Promotion();
+            $promotion->setDescription($description);
+            $promotion->setType($type);
+            $promotion->setValue($value);
+            $promotion->setStock($stock);
 
-    $io->text("SKU: $sku | Promo: $promo %");
+            $this->em->persist($promotion);
 
-    $this->em->persist($stock);
-}
+            $io->text("SKU: $sku | $description | $type | $value");
+        }
 
         fclose($handle);
 
