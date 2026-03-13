@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Controller;
+
+use App\Repository\StockRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+final class StockController extends AbstractController
+{
+    #[Route('/stock', name: 'app_stock')]
+    public function index(): Response
+    {
+        return $this->render('stock/index.html.twig', [
+            'controller_name' => 'StockController',
+        ]);
+    }
+    #[Route('/api/stock/{sku}', methods: ['GET'])]
+public function getStockBySku(string $sku, StockRepository $stockRepository)
+{
+    $stock = $stockRepository->findOneBy(['sku' => $sku]);
+
+    if (!$stock) {
+        return $this->json([
+            'error' => 'Product not found'
+        ], 404);
+    }
+
+    return $this->json([
+        'sku' => $stock->getSku(),
+        'price' => $stock->getPrice(),
+        'quantity' => $stock->getQuantity(),
+        'promo' => $stock->getPromo(),
+        'finalPrice' => $stock->getFinalPrice()
+    ]);
+}
+
+
+
+}
+
