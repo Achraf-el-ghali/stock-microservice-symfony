@@ -67,7 +67,7 @@ class PromoImportCommand extends Command
             $promotion->setDescription($description);
             $promotion->setType($type);
             $promotion->setValue($value);
-            $promotion->setStock($stock);
+            $stock->addPromotion($promotion);
 
             $this->em->persist($promotion);
 

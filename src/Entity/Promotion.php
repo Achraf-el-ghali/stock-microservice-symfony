@@ -5,7 +5,8 @@ namespace App\Entity;
 use App\Repository\PromotionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PromotionRepository::class)]
 class Promotion
@@ -15,13 +16,34 @@ class Promotion
     #[ORM\Column]
     private ?int $id = null;
 
-    //#[ORM\Column(nullable: true)]
-    //private ?float $percentage = null;
+    #[ORM\ManyToMany(targetEntity: Stock::class, mappedBy: 'promotions')]
+    private Collection $stocks;
 
+    public function __construct()
+    {
+        $this->stocks = new ArrayCollection();
+    }
 
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
 
-    #[ORM\ManyToOne(inversedBy: 'promotions')]
-    private ?Stock $stock = null;
+    public function addStock(Stock $stock): static
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks->add($stock);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): static
+    {
+        $this->stocks->removeElement($stock);
+
+        return $this;
+    }
 
     #[ORM\Column(length:255)]
     #[Groups(['stock:read'])]
@@ -40,58 +62,36 @@ class Promotion
         return $this->id;
     }
 
-    // public function getPercentage(): ?float
-    // {
-    //     return $this->percentage;
-    // }
-
-    // public function setPercentage(?float $percentage): static
-    // {
-    //     $this->percentage = $percentage;
-
-    //     return $this;
-    // }
-
-    public function getStock(): ?Stock
+    public function getDescription(): ?string
     {
-        return $this->stock;
+        return $this->description;
     }
 
-    public function setStock(?Stock $stock): static
+    public function getType(): ?string
     {
-        $this->stock = $stock;
+        return $this->type;
+    }
 
+    public function getValue(): ?float
+    {
+        return $this->value;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
         return $this;
     }
-   public function getDescription(): ?string
-{
-    return $this->description;
-}
 
-public function getType(): ?string
-{
-    return $this->type;
-}
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+        return $this;
+    }
 
-public function getValue(): ?float
-{
-    return $this->value;
-}
-public function setDescription(string $description): static
-{
-    $this->description = $description;
-    return $this;
-}
-
-public function setType(string $type): static
-{
-    $this->type = $type;
-    return $this;
-}
-
-public function setValue(float $value): static
-{
-    $this->value = $value;
-    return $this;
-}
+    public function setValue(float $value): static
+    {
+        $this->value = $value;
+        return $this;
+    }
 }

@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\KafkaProducer;
+
 
 final class StockController extends AbstractController
 {
@@ -35,6 +37,19 @@ public function getStockBySku(string $sku, StockRepository $stockRepository)
         'promo' => $stock->getPromotions(),
         'finalPrice' => $stock->getFinalPrice()
     ]);
+}
+#[Route('/send-product')]
+public function sendProduct(KafkaProducer $producer)
+{
+    $data = [
+        "sku" => "OIL5W30",
+        "quantity" => 50,
+        "price" => 200
+    ];
+
+    $producer->sendProduct($data);
+
+    return $this->json(["message" => "product sent to kafka"]);
 }
 
 
