@@ -24,7 +24,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       libzip-dev \
       wget \
       librabbitmq-dev \
+      librdkafka-dev \
     && pecl install amqp \
+    && pecl install rdkafka \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-configure intl \
     && docker-php-ext-install \
@@ -33,7 +35,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       intl \
       opcache \
       zip \
-    && docker-php-ext-enable amqp \
+    && docker-php-ext-enable amqp rdkafka \
     && rm -rf /tmp/* \
     && rm -rf /var/list/apt/* \
     && rm -rf /var/lib/apt/lists/* \
@@ -69,6 +71,7 @@ RUN pecl install xdebug-3.3.1 && \
 RUN echo "deb http://security.debian.org/debian-security bullseye-security main contrib non-free" > /etc/apt/sources.list && \
     apt-get update && apt-get upgrade -y
 RUN apt-get install -y git  libxslt-dev libldap2-dev libssl-dev
+
 
 # Installer les extensions PHP
 #COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/

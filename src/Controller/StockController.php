@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\KafkaProducer;
@@ -47,12 +47,14 @@ public function sendProduct(KafkaProducer $producer)
         "price" => 200
     ];
 
-    $producer->sendProduct($data);
+    $producer->sendProduct(
+        $data['sku'],
+        $data['price'],
+        $data['quantity']
+    );
 
     return $this->json(["message" => "product sent to kafka"]);
 }
-
-
 
 }
 

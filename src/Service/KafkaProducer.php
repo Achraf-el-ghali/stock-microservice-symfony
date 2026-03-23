@@ -2,26 +2,18 @@
 
 namespace App\Service;
 
-use Enqueue\RdKafka\RdKafkaConnectionFactory;
-
 class KafkaProducer
 {
-    public function sendProduct(array $data)
+    public function sendProduct($sku, $price, $quantity)
     {
-        $factory = new RdKafkaConnectionFactory([
-            'global' => [
-                'bootstrap.servers' => 'localhost:9092',
-            ],
+        $message = json_encode([
+            "sku" => $sku,
+            "price" => $price,
+            "quantity" => $quantity
         ]);
 
-        $context = $factory->createContext();
+        $cmd = "echo '$message' | docker exec -i symfony2026-kafka-1 kafka-console-producer --topic stock.products --bootstrap-server localhost:9092";
 
-        $topic = $context->createTopic('product');
-
-        $message = $context->createMessage(json_encode($data));
-
-        $producer = $context->createProducer();
-
-        $producer->send($topic, $message);
+        exec($cmd);
     }
 }

@@ -13,6 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StockRepository;
 use App\Entity\Stock;
+use App\Service\KafkaProducer;
 
 //on identifier la commande
 #[AsCommand(
@@ -22,13 +23,15 @@ use App\Entity\Stock;
 //php bin/console app:stock:import stock.csv /stock.csv est l argument passe
 class StockImportCommand extends Command //herite de commande donc symfony sait que c est une commande
 {
+              private KafkaProducer $producer;
               private EntityManagerInterface $em;
               private StockRepository $stockRepository;
-    public function __construct(EntityManagerInterface $em, StockRepository $stockRepository)
+    public function __construct(EntityManagerInterface $em, StockRepository $stockRepository,KafkaProducer $producer)
 {
     parent::__construct();
     $this->em = $em;
     $this->stockRepository = $stockRepository;
+    $this->producer = $producer;
 }
     protected function configure(): void//pour la configue et definir l argument
     {
@@ -80,7 +83,10 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
     $stock->setPrice($price);
 
     $this->em->persist($stock);
+    // envoyer vers Kafka
+    $this->producer->sendProduct($sku, $price, $quantity);
 }
+
              //fermuture du fichier
              fclose($handle);
           //sauvgarder dans la base

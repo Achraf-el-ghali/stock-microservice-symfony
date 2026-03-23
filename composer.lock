@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "593ce4c84e0f362ce9083e337e29267e",
+    "content-hash": "ceef4ebf2ead94649d1230cd84bb2de3",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -2574,6 +2574,73 @@
                 "source": "https://github.com/php-enqueue/enqueue-dev"
             },
             "time": "2025-12-21T18:13:12+00:00"
+        },
+        {
+            "name": "jobcloud/php-kafka-lib",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jobcloud/php-kafka-lib.git",
+                "reference": "a5a0282c83085d5a506562d0be75aced4ca9a3cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jobcloud/php-kafka-lib/zipball/a5a0282c83085d5a506562d0be75aced4ca9a3cc",
+                "reference": "a5a0282c83085d5a506562d0be75aced4ca9a3cc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-rdkafka": "^4.0|^5.0|^6.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "flix-tech/avro-serde-php": "^1.4",
+                "infection/infection": "^0.26",
+                "johnkary/phpunit-speedtrap": "^3.1",
+                "kwn/php-rdkafka-stubs": "^2.0.0",
+                "php-mock/php-mock-phpunit": "^2.6",
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^9.4",
+                "rregeer/phpunit-coverage-check": "^0.3.1",
+                "squizlabs/php_codesniffer": "^3.5.4"
+            },
+            "suggest": {
+                "flix-tech/avro-serde-php": "Is needed for Avro support"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jobcloud\\Kafka\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jobcloud AG",
+                    "homepage": "https://careers.jobcloud.ch/en/our-team/?term=133"
+                }
+            ],
+            "description": "Jobcloud PHP Kafka library",
+            "keywords": [
+                "kafka",
+                "messaging",
+                "php",
+                "rdkafka"
+            ],
+            "support": {
+                "issues": "https://github.com/jobcloud/php-kafka-lib/issues",
+                "source": "https://github.com/jobcloud/php-kafka-lib/tree/v2.0.1"
+            },
+            "time": "2026-03-20T11:00:22+00:00"
         },
         {
             "name": "monolog/monolog",
