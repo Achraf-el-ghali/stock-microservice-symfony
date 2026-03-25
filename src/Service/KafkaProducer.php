@@ -4,6 +4,15 @@ namespace App\Service;
 
 class KafkaProducer
 {
+    private $producer;
+
+    public function __construct()
+    {
+        $this->producer = \Jobcloud\Kafka\Producer\KafkaProducerBuilder::create()
+            ->withAdditionalBroker('kafka:9092')
+            ->build();
+    }
+
     public function sendProduct($sku, $price, $quantity)
     {
         $message = json_encode([
@@ -12,8 +21,14 @@ class KafkaProducer
             "quantity" => $quantity
         ]);
 
-        $cmd = "echo '$message' | docker exec -i symfony2026-kafka-1 kafka-console-producer --topic stock.products --bootstrap-server localhost:9092";
+        $kafkaMessage = \Jobcloud\Kafka\Message\KafkaProducerMessage::create('stock.products', 0)
+            ->withBody($message);
 
-        exec($cmd);
+        $this->producer->produce($kafkaMessage);
+        $this->producer->flush(10000);
+
+        // Old command (shell exec):
+        // $cmd = "echo '$message' | docker exec -i symfony2026-kafka-1 kafka-console-producer --topic stock.products --bootstrap-server localhost:9092";
+        // exec($cmd);
     }
 }

@@ -63,6 +63,21 @@ services:
         volumes:
             - db_admin_data:/var/www/html
 
+    stock_consumer:
+        build:
+            context: ./infra/
+            dockerfile: ./php/Dockerfile
+        command: php bin/console app:kafka-consumer
+        volumes:
+            - .:/var/www/html:cached
+            - ./infra/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./infra/php/config/php.ini:/usr/local/etc/php/php.ini
+        depends_on:
+            - stock_db
+        networks:
+            - internal_network
+        restart: always
+
 volumes:
     db_admin_data:
     mysql:

@@ -38,14 +38,26 @@ class KafkaConsumerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
        $io = new SymfonyStyle($input, $output);
+        /* Old configuration (buggy - overwritten subscriptions):
         $consumer = KafkaConsumerBuilder::create()
-                ->withAdditionalBroker('kafka:9092') //ou ce trouve server kafka
-                ->withConsumerGroup('stock-group-2') //si on a bzaf consumer
+                ->withAdditionalBroker('kafka:9092')
+                ->withConsumerGroup('stock-group-2')
                 ->withSubscription('product-created')
                 ->withSubscription('product-deleted')
                 ->withSubscription('product-reserved')
                 ->withSubscription('product-unreserved')
                 ->withSubscription('product-removed')
+                ->build();
+        */
+
+        $consumer = KafkaConsumerBuilder::create()
+                ->withAdditionalBroker('kafka:9092') //ou ce trouve server kafka
+                ->withConsumerGroup('stock-group-3') //si on a bzaf consumer
+                ->withSubscription('product-created')
+                ->withAdditionalSubscription('product-deleted')
+                ->withAdditionalSubscription('product-reserved')
+                ->withAdditionalSubscription('product-unreserved')
+                ->withAdditionalSubscription('product-removed')
               ->withAdditionalConfig([
                   'auto.offset.reset' => 'earliest'
               ])
@@ -60,24 +72,36 @@ class KafkaConsumerCommand extends Command
         $io->writeln('Kafka consumer started...');
 
         while (true) {
-            $message = $consumer->consume(10000);
+            try {
+                $message = $consumer->consume(120000);
+            } catch (\Throwable $e) {
+                // Ignore all exceptions (Timeout, etc) to keep consumer alive
+                continue;
+            }
 
             if ($message === null){
                 continue;
             }
 
-            $data = json_decode($message->getBody(), true);//n9ra msg envoyer par kafka depuis body
-            if (!$data) {
-                    continue;
-                }
+            $envelope = json_decode($message->getBody(), true);
+            if (!$envelope || !isset($envelope['body'])) {
+                 continue;
+            }
+            $data = json_decode($envelope['body'], true);
 
-            if (!isset($data['event']) || !isset($data['data'])) {//pour verifie si event et data existe
+            if (!$data || !isset($data['event']) || !isset($data['data'])) {//pour verifie si event et data existe
                         continue;
             }
 
             //$event = $data['event'];
             $event = $message->getTopicName();
             $payload = $data['data'];
+            
+            // Sécurité au cas où l'app gearoil n'envoie pas le sku
+            if (!isset($payload['sku'])) {
+                $payload['sku'] = "MISSING-SKU-" . uniqid();
+                $io->warning("Attention: l'événement reçu n'a pas de champ 'sku'. Un SKU temporaire a été assigné.");
+            }
 
             if ($event === 'product-created') {
 

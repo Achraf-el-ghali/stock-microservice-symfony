@@ -135,22 +135,22 @@ class Stock
     }
 
     #[Groups(['stock:read'])]
-    public function getFinalPrice(): float
-    {
-        $finalPrice = $this->price;
+        public function getFinalPrice(): float
+        {
+            $finalPrice = $this->price;
 
-        foreach ($this->promotions as $promo) {
-            if ($promo->getType() === "percentage") {
-                $finalPrice -= $finalPrice * ($promo->getValue() / 100);
+            foreach ($this->promotions as $promo) {
+                if ($promo->getType() === "percentage") {
+                    $finalPrice -= $finalPrice * ($promo->getValue() / 100);
+                }
+
+                if ($promo->getType() === "cash") {
+                    $finalPrice -= $promo->getValue();
+                }
             }
 
-            if ($promo->getType() === "cash") {
-                $finalPrice -= $promo->getValue();
-            }
+            return $finalPrice;
         }
-
-        return $finalPrice;
-    }
 
     public function getIsActive(): bool
     {
