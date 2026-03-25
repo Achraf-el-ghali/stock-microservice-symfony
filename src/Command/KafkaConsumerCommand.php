@@ -47,7 +47,7 @@ class KafkaConsumerCommand extends Command
                 ->withSubscription('product-unreserved')
                 ->withSubscription('product-removed')
               ->withAdditionalConfig([
-                  'auto.offset.reset' => 'latest'
+                  'auto.offset.reset' => 'earliest'
               ])
               ->build(); //la connection with kafka                                            //               create → object فارغ
                                                                                                 // broker → فين يتاصل

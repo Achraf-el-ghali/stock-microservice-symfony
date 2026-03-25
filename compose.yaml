@@ -1,5 +1,5 @@
 services:
-    nginx_webserver:
+    stock_nginx:
         build:
             context: ./infra/
             args:
@@ -7,19 +7,19 @@ services:
             dockerfile: ./nginx/Dockerfile
         restart: always
         ports:
-            - "80:80"
-            - "443:443"
+            - "8080:80"
+            - "4443:443"
         volumes:
             - .:/var/www/html:ro,cached
             - ./var/log/nginx:/var/log/nginx
             - ./infra/nginx/conf.d:/etc/nginx/conf.d
 
         depends_on:
-            - php
+            - stock_php
         networks:
             - internal_network
 
-    php:
+    stock_php:
         build:
             context: ./infra/
             dockerfile: ./php/Dockerfile
@@ -29,14 +29,14 @@ services:
             - ./infra/php/config/php.ini:/usr/local/etc/php/php.ini
             - ./infra/php/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
         depends_on:
-            - database
+            - stock_db
         networks:
             - internal_network
         expose:
             - "9000"
             - "9003"
 
-    database:
+    stock_db:
         image: mysql
         platform: linux/x86_64
         command: --innodb-use-native-aio=${INNODB_USE_NATIVE_AIO:-1} --sql_mode=${SQL_MODE:-"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"}
@@ -44,56 +44,24 @@ services:
             MYSQL_ROOT_PASSWORD: secret
             MYSQL_DATABASE: stock_service
         ports:
-            - "33060:3306"
+            - "33066:3306"
         volumes:
             - mysql_user:/var/lib/mysql:delegated
         networks:
             - internal_network
 
-    phpmyadmin:
+    stock_pma:
         image: phpmyadmin/phpmyadmin:5
         environment:
-            PMA_HOST: database
+            PMA_HOST: stock_db
         ports:
             - "9002:80"
         depends_on:
-            - database
+            - stock_db
         networks:
             - internal_network
         volumes:
             - db_admin_data:/var/www/html
-
-    kafka:
-        image: confluentinc/cp-kafka:7.5.0
-        ports:
-            - "9092:9092"
-        environment:
-            CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
-            KAFKA_NODE_ID: 1
-            KAFKA_PROCESS_ROLES: broker,controller
-            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-            KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-            KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-        networks:
-            - internal_network
-        volumes:
-            - kafka_data:/bitnami/kafka
-
-    kafka-ui:
-        image: provectuslabs/kafka-ui
-        ports:
-            - "8080:8080"
-        environment:
-            KAFKA_CLUSTERS_0_NAME: local
-            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-        depends_on:
-            - kafka
-        networks:
-            - internal_network
 
 volumes:
     db_admin_data:
@@ -103,4 +71,6 @@ volumes:
 
 networks:
     internal_network:
-        name: internal_network
+        external: true
+        name: gearoil_network
+

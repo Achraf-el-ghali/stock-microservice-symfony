@@ -14,13 +14,14 @@ down-volumes:
 	docker compose down -v
 
 create-database:
-	docker compose exec php php bin/console doctrine:database:create
+	docker compose exec stock_php php bin/console doctrine:database:create
 
 drop-database:
-	docker compose exec php bin/console doctrine:database:drop --force
+	docker compose exec stock_php bin/console doctrine:database:drop --force
 
 install-packages:
-	docker compose exec php composer install --no-cache
+	docker compose exec stock_php composer install --no-cache
+	docker compose exec stock_php chmod -R 777 vendor/
 
 enter: ## Enter a running service container (e.g., make enter service=php)
 	@if [ -n "$(service)" ]; then \
