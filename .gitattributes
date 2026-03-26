@@ -1,0 +1,17 @@
+* text=auto eol=lf
+
+# Explicitly set line endings for scripts
+bin/console text eol=lf
+Makefile text eol=lf
+*.sh text eol=lf
+
+# Force certain files to always be text
+*.php text
+*.yaml text
+*.json text
+*.csv text
+*.twig text
+*.md text
+*.xml text
+*.js text
+*.css text

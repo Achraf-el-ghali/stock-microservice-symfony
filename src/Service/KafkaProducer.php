@@ -8,9 +8,13 @@ class KafkaProducer
 
     public function __construct()
     {
-        $this->producer = \Jobcloud\Kafka\Producer\KafkaProducerBuilder::create()
-            ->withAdditionalBroker('kafka:9092')
-            ->build();
+        try {
+            $this->producer = \Jobcloud\Kafka\Producer\KafkaProducerBuilder::create()
+                ->withAdditionalBroker('kafka:9092')
+                ->build();
+        } catch (\Exception $e) {
+            $this->producer = null;
+        }
     }
 
     public function sendProduct($sku, $price, $quantity)

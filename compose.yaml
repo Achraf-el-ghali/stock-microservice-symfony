@@ -88,4 +88,3 @@ networks:
     internal_network:
         external: true
         name: gearoil_network
-
