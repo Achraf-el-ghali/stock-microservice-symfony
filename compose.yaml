@@ -5,6 +5,8 @@ services:
             args:
                 BUILD_ARGUMENT_ENV: dev
             dockerfile: ./nginx/Dockerfile
+        # pour que ne pas demarer service chaque fois : service cron start on la joute ici 
+        command: ["sh", "-c", "service cron start && php-fpm"]
         restart: always
         ports:
             - "8080:80"

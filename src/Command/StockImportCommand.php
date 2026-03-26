@@ -20,7 +20,7 @@ use App\Service\KafkaProducer;
     name: 'app:stock:import',
     description: 'Add a short description for your command',
 )]
-//php bin/console app:stock:import stock.csv /stock.csv est l argument passe
+//php bin/console app:stock:import stock.csv  /stock.csv est l argument passe
 class StockImportCommand extends Command //herite de commande donc symfony sait que c est une commande
 {
               private KafkaProducer $producer;
@@ -69,7 +69,7 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
     $quantity = (int)$data[1];
     $price = (float)$data[2];
 
-    //pour l affichage dans terminal :
+    //pour l affichage dans terminal 
     $io->text("SKU: $sku | Quantity: $quantity | Price: $price");
 
     $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
@@ -83,7 +83,7 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
     $stock->setPrice($price);
 
     $this->em->persist($stock);
-    // envoyer vers Kafka
+    // seft l kafka 
     $this->producer->sendProduct($sku, $price, $quantity);
 }
 

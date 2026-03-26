@@ -78,3 +78,16 @@ RUN apt-get install -y git  libxslt-dev libldap2-dev libssl-dev
 #RUN install-php-extensions gd bcmath zip xsl ldap
 
 USER root
+
+
+# AJOUT DE LA CONFIGURATION CRON (Export 24h)
+
+
+# 1. Créer le fichier de planification
+RUN echo "0 0 * * * php /var/www/html/bin/console app:stock:export-database >> /var/log/cron_stock.log 2>&1" > /etc/cron.d/stock-cron
+
+# 2. Appliquer les permissions et charger la crontab
+RUN chmod 0644 /etc/cron.d/stock-cron && crontab /etc/cron.d/stock-cron
+
+# 3. Créer le fichier log pour éviter les erreurs de permission au démarrage
+RUN touch /var/log/cron_stock.log && chmod 666 /var/log/cron_stock.log
