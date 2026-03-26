@@ -7,34 +7,34 @@ ENV APP_HOME /var/www/html
 
 # install all the dependencies and enable PHP modules
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-      bash-completion \
-      fish \
-      procps \
-      nano \
-      git \
-      unzip \
-      libicu-dev \
-      zlib1g-dev \
-      libxml2 \
-      libxml2-dev \
-      libreadline-dev \
-      supervisor \
-      cron \
-      sudo \
-      libzip-dev \
-      wget \
-      librabbitmq-dev \
-      librdkafka-dev \
+    bash-completion \
+    fish \
+    procps \
+    nano \
+    git \
+    unzip \
+    libicu-dev \
+    zlib1g-dev \
+    libxml2 \
+    libxml2-dev \
+    libreadline-dev \
+    supervisor \
+    cron \
+    sudo \
+    libzip-dev \
+    wget \
+    librabbitmq-dev \
+    librdkafka-dev \
     && pecl install amqp \
     && pecl install rdkafka \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-configure intl \
     && docker-php-ext-install \
-      pdo_mysql \
-      sockets \
-      intl \
-      opcache \
-      zip \
+    pdo_mysql \
+    sockets \
+    intl \
+    opcache \
+    zip \
     && docker-php-ext-enable amqp rdkafka \
     && rm -rf /tmp/* \
     && rm -rf /var/list/apt/* \

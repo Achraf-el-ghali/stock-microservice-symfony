@@ -18,19 +18,20 @@ class GetStockController extends AbstractController
         private StockRepository $stockRepository,
     ) {}
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(string $sku): JsonResponse
     {
-        $stocks = $this->stockRepository->findAll();
-        $data = [];
+        $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
 
-        foreach ($stocks as $stock) {
-            $data[] = [
-                'sku' => $stock->getSku(),
-                'price' => $stock->getPrice(),
-                'quantity' => $stock->getQuantity(),
-                'finalPrice' => $stock->getFinalPrice(),
-            ];
+        if (!$stock) {
+            return $this->json(['error' => 'Stock not found'], 404);
         }
+
+        $data = [
+            'sku' => $stock->getSku(),
+            'price' => $stock->getPrice(),
+            'quantity' => $stock->getQuantity(),
+            'finalPrice' => $stock->getFinalPrice(),
+        ];
 
         return $this->json($data);
     }
