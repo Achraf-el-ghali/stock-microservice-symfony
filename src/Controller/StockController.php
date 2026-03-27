@@ -36,7 +36,8 @@ public function getStockBySku(string $sku, StockRepository $stockRepository): Js
         'price' => $stock->getPrice(),
         'quantity' => $stock->getQuantity(),
         'promo' => $stock->getPromotions(),
-        'finalPrice' => $stock->getFinalPrice()
+        'finalPrice' => $stock->getFinalPrice(),
+        'isActive' => $stock->getIsActive()
     ]);
 }
 
@@ -69,6 +70,7 @@ public function updateStockPrice(
         'price'      => $stock->getPrice(),
         'quantity'   => $stock->getQuantity(),
         'finalPrice' => $stock->getFinalPrice(),
+        'isActive'   => $stock->getIsActive(),
     ]);
 }
 #[Route('/send-product')]
