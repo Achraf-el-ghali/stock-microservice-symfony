@@ -5,8 +5,6 @@ services:
             args:
                 BUILD_ARGUMENT_ENV: dev
             dockerfile: ./nginx/Dockerfile
-        # pour que ne pas demarer service chaque fois : service cron start on la joute ici 
-        command: ["sh", "-c", "service cron start && php-fpm"]
         restart: always
         ports:
             - "8080:80"
@@ -30,6 +28,7 @@ services:
             - ./infra/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
             - ./infra/php/config/php.ini:/usr/local/etc/php/php.ini
             - ./infra/php/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        command: ["sh", "-c", "service cron start && php-fpm"]
         depends_on:
             - stock_db
         networks:
@@ -69,7 +68,7 @@ services:
         build:
             context: ./infra/
             dockerfile: ./php/Dockerfile
-        command: php bin/console app:kafka-consumer
+        command: ["sh", "-c", "composer install --no-interaction && php bin/console app:kafka-consumer"]
         volumes:
             - .:/var/www/html:cached
             - ./infra/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
