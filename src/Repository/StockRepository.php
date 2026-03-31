@@ -16,28 +16,16 @@ class StockRepository extends ServiceEntityRepository
         parent::__construct($registry, Stock::class);
     }
 
-//    /**
-//     * @return Stock[] Returns an array of Stock objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Stock
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Finds a Stock summary record by SKU and applies a pessimistic write lock.
+     */
+    public function findOneBySkuWithLock(string $sku): ?Stock
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT s FROM App\Entity\Stock s WHERE s.sku = :sku'
+        )
+        ->setParameter('sku', $sku)
+        ->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)
+        ->getOneOrNullResult();
+    }
 }
