@@ -31,6 +31,7 @@ class GetStockController extends AbstractController
             'price' => $stock->getPrice(),
             'quantity' => $stock->getQuantity(),
             'finalPrice' => $stock->getFinalPrice(),
+            'isActive' => $stock->getIsActive(),
         ];
 
         return $this->json($data);

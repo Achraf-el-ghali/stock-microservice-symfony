@@ -59,11 +59,14 @@ class Stock
     #[Groups(['stock:read'])]
     private bool $isActive = true;
 
+<<<<<<< HEAD
     #[ORM\Column]
     #[Assert\PositiveOrZero]
     #[Groups(['stock:read'])]
     private int $reserved = 0;
 
+=======
+>>>>>>> 879c3385e228786ba02a63e7b503a9147caa82d5
     public function addPromotion(Promotion $promotion): static
     {
         if (!$this->promotions->contains($promotion)) {
@@ -167,17 +170,6 @@ class Stock
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-        return $this;
-    }
-
-    public function getReserved(): int
-    {
-        return $this->reserved;
-    }
-
-    public function setReserved(int $reserved): static
-    {
-        $this->reserved = $reserved;
         return $this;
     }
 }
