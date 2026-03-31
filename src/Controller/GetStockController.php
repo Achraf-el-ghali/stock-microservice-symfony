@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[AsController]
-#[Route('/api/stocks/{sku}', name: 'get_stock', methods: ['GET'])]
+#[Route('/api/stocks-test/{sku}', name: 'get_stock', methods: ['GET'])]
 class GetStockController extends AbstractController
 {
     public function __construct(

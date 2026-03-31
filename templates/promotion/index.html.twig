@@ -1,0 +1,66 @@
+{% extends 'adminlte.html.twig' %}
+
+{% block title %}Promotion List{% endblock %}
+{% block page_title %}Promotions{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Manage your promotions</h3>
+                <div class="card-tools">
+                    <form method="post" action="{{ path('app_promotion_import') }}" style="display:inline-block;" class="mr-2">
+                        <button type="submit" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-file-import"></i> Import promo.csv
+                        </button>
+                    </form>
+                    <a href="{{ path('app_promotion_new') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus"></i> Create New
+                    </a>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for promotion in promotions %}
+                        <tr>
+                            <td>{{ promotion.id }}</td>
+                            <td>{{ promotion.description }}</td>
+                            <td>
+                                <span class="badge {{ promotion.type == 'percentage' ? 'badge-info' : 'badge-primary' }}">
+                                    {{ promotion.type|capitalize }}
+                                </span>
+                            </td>
+                            <td>{{ promotion.value }} {{ promotion.type == 'percentage' ? '%' : '€' }}</td>
+                            <td>
+                                <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="btn btn-info btn-xs">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                {{ include('promotion/_delete_form.html.twig') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No promotions found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+{% endblock %}

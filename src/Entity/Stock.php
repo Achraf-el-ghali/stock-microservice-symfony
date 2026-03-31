@@ -60,6 +60,7 @@ class Stock
     private bool $isActive = true;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero]
     #[Groups(['stock:read'])]
     private int $reserved = 0;
 
@@ -135,22 +136,28 @@ class Stock
     }
 
     #[Groups(['stock:read'])]
-        public function getFinalPrice(): float
-        {
-            $finalPrice = $this->price;
+    public function getFinalPrice(): float
+    {
+        $finalPrice = $this->price;
 
-            foreach ($this->promotions as $promo) {
-                if ($promo->getType() === "percentage") {
-                    $finalPrice -= $finalPrice * ($promo->getValue() / 100);
-                }
-
-                if ($promo->getType() === "cash") {
-                    $finalPrice -= $promo->getValue();
-                }
+        foreach ($this->promotions as $promo) {
+            if ($promo->getType() === "percentage") {
+                $finalPrice -= $finalPrice * ($promo->getValue() / 100);
             }
 
-            return $finalPrice;
+            if ($promo->getType() === "cash") {
+                $finalPrice -= $promo->getValue();
+            }
         }
+
+        return max(0, $finalPrice);
+    }
+
+    #[Groups(['stock:read'])]
+    public function getAvailable(): int
+    {
+        return max(0, $this->quantity - $this->reserved);
+    }
 
     public function getIsActive(): bool
     {

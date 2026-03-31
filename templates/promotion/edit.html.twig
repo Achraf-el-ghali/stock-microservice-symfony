@@ -1,0 +1,20 @@
+{% extends 'adminlte.html.twig' %}
+
+{% block title %}Edit Promotion{% endblock %}
+{% block page_title %}Edit Promotion #{{ promotion.id }}{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Update Promotion Details</h3>
+                <div class="card-tools">
+                    <span class="badge badge-light">ID: {{ promotion.id }}</span>
+                </div>
+            </div>
+            {{ include('promotion/_form.html.twig', {'button_label': 'Update Promotion'}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

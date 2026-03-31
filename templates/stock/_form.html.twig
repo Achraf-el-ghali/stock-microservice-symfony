@@ -1,0 +1,57 @@
+{{ form_start(form) }}
+    <div class="card-body">
+        <div class="form-group">
+            {{ form_label(form.sku) }}
+            {{ form_widget(form.sku) }}
+            {{ form_errors(form.sku) }}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    {{ form_errors(form.price) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.quantity) }}
+                    {{ form_widget(form.quantity) }}
+                    {{ form_errors(form.quantity) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.reserved) }}
+                    {{ form_widget(form.reserved) }}
+                    {{ form_errors(form.reserved) }}
+                </div>
+            </div>
+            <div class="col-md-6 pt-4">
+                <div class="form-check">
+                    {{ form_widget(form.isActive) }}
+                    {{ form_label(form.isActive, 'Is Active', {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Apply Promotions</label>
+            <div class="row">
+                {% for promotion in form.promotions %}
+                <div class="col-md-4">
+                    <div class="form-check">
+                        {{ form_widget(promotion) }}
+                        {{ form_label(promotion, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-right">
+        <a href="{{ path('app_stock') }}" class="btn btn-default">Cancel</a>
+        <button class="btn btn-primary">{{ button_label|default('Save Stock') }}</button>
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,17 @@
+{% extends 'adminlte.html.twig' %}
+
+{% block title %}New Promotion{% endblock %}
+{% block page_title %}Create New Promotion{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Promotion Details</h3>
+            </div>
+            {{ include('promotion/_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

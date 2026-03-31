@@ -14,25 +14,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StockRepository;
 use App\Entity\Stock;
 use App\Service\KafkaProducer;
+use App\Service\CsvImportService;
 
 //on identifier la commande
 #[AsCommand(
     name: 'app:stock:import',
     description: 'Add a short description for your command',
 )]
+//docker exec -it stock-microservice-symfony-stock_php-1
 //php bin/console app:stock:import stock.csv  /stock.csv est l argument passe
 class StockImportCommand extends Command //herite de commande donc symfony sait que c est une commande
 {
-              private KafkaProducer $producer;
-              private EntityManagerInterface $em;
-              private StockRepository $stockRepository;
-    public function __construct(EntityManagerInterface $em, StockRepository $stockRepository,KafkaProducer $producer)
-{
-    parent::__construct();
-    $this->em = $em;
-    $this->stockRepository = $stockRepository;
-    $this->producer = $producer;
-}
+    public function __construct(private CsvImportService $importService)
+    {
+        parent::__construct();
+    }
     protected function configure(): void//pour la configue et definir l argument
     {
         $this
@@ -54,43 +50,14 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
         if ($csvFile ) {//objet symfonystyle  pour l affichage des messages dans terminal
             $io->note(sprintf('You passed an argument: %s', $csvFile ));
         }
-        //pour la lecture du fichier ouvrir seulement
-        $handle = fopen($csvFile, 'r');
-        //la prmier ligne ne represent pas une donne on doit la saute
-        fgetcsv($handle);
-        //lire le contenu
-       while (($data = fgetcsv($handle)) !== false) // tant que on a pas termine le fichier
-{
-    if (count($data) < 3) {
-        continue;
-    }
+        $count = $this->importService->importStocks($csvFile);
 
-    $sku = $data[0];
-    $quantity = (int)$data[1];
-    $price = (float)$data[2];
+        if ($count === 0) {
+            $io->error("No data imported. Check if file exists and has correct format.");
+            return Command::FAILURE;
+        }
 
-    //pour l affichage dans terminal 
-    $io->text("SKU: $sku | Quantity: $quantity | Price: $price");
-
-    $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
-
-    if (!$stock) {
-        $stock = new Stock();
-        $stock->setSku($sku);
-    }
-
-    $stock->setQuantity($quantity);
-    $stock->setPrice($price);
-
-    $this->em->persist($stock);
-    // seft l kafka 
-    $this->producer->sendProduct($sku, $price, $quantity);
-}
-
-             //fermuture du fichier
-             fclose($handle);
-          //sauvgarder dans la base
-           $this->em->flush();
+        $io->success(sprintf('Imported %d stocks successfully.', $count));
 
 
 

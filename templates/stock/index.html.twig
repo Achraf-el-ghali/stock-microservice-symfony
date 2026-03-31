@@ -1,20 +1,106 @@
-{% extends 'base.html.twig' %}
+{% extends 'adminlte.html.twig' %}
 
-{% block title %}Hello StockController!{% endblock %}
+{% block title %}Stock Management{% endblock %}
+{% block page_title %}Stock Management{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="row mb-3">
+    <div class="col-12 text-right">
+        <form method="post" action="{{ path('app_stock_import') }}" style="display:inline-block;" class="mr-2">
+            <button type="submit" class="btn btn-outline-info">
+                <i class="fas fa-file-import"></i> Import from stock.csv
+            </button>
+        </form>
+        <a href="{{ path('app_stock_new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Stock
+        </a>
+    </div>
+</div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/src/Controller/StockController.php</code></li>
-        <li>Your template at <code>/var/www/html/templates/stock/index.html.twig</code></li>
-    </ul>
+<div class="row">
+    {% for stock in stocks %}
+    <div class="col-md-4 col-sm-6 col-12">
+        <div class="card card-outline {{ stock.quantity > 10 ? 'card-success' : (stock.quantity > 0 ? 'card-warning' : 'card-danger') }}">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-barcode mr-1"></i>
+                    {{ stock.sku }}
+                </h3>
+                <div class="card-tools">
+                    <span class="badge {{ stock.isActive ? 'badge-success' : 'badge-secondary' }}">
+                        {{ stock.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="text-muted mb-1">Price</p>
+                        <h4 class="text-primary">{{ stock.price|number_format(2) }} €</h4>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted mb-1">Quantity</p>
+                        <h4>{{ stock.quantity }}</h4>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-0">Final Price (w/ PROMO)</p>
+                        <h5 class="text-success font-weight-bold">{{ stock.finalPrice|number_format(2) }} €</h5>
+                    </div>
+                    {% if stock.promotions|length > 0 %}
+                    <span class="badge badge-pill badge-info" title="{{ stock.promotions|map(p => p.description)|join(', ') }}">
+                        {{ stock.promotions|length }} PROMO
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <div class="row text-center mb-3">
+                    <div class="col-6 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header {% if stock.reserved > stock.quantity %}text-warning{% endif %}" title="{{ stock.reserved > stock.quantity ? 'Reserved qty exceeds total qty' : '' }}">
+                                {{ stock.reserved }}
+                            </h5>
+                            <span class="description-text">RESERVED</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="description-block">
+                            <h5 class="description-header {% if stock.available == 0 and stock.quantity > 0 %}text-danger{% endif %}">
+                                {{ stock.available }}
+                            </h5>
+                            <span class="description-text">AVAILABLE</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center pt-2 border-top">
+                    <div class="btn-group">
+                        <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form method="post" action="{{ path('app_stock_sync', {'id': stock.id}) }}" style="display:inline-block;">
+                            <button class="btn btn-warning btn-sm">
+                                <i class="fas fa-sync"></i> Sync
+                            </button>
+                        </form>
+                        {{ include('stock/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="callout callout-info">
+            <h5>No stock items found!</h5>
+            <p>Your database is currently empty. Use the API or Kafka to ingest data.</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

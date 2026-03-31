@@ -1,0 +1,17 @@
+{% extends 'adminlte.html.twig' %}
+
+{% block title %}New Stock Item{% endblock %}
+{% block page_title %}Create New Stock{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Stock Details</h3>
+            </div>
+            {{ include('stock/_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

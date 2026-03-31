@@ -1,0 +1,20 @@
+{% extends 'adminlte.html.twig' %}
+
+{% block title %}Edit Stock Item{% endblock %}
+{% block page_title %}Edit Stock #{{ stock.id }}{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Update Stock Details</h3>
+                <div class="card-tools">
+                    <span class="badge badge-light">SKU: {{ stock.sku }}</span>
+                </div>
+            </div>
+            {{ include('stock/_form.html.twig', {'button_label': 'Update Stock'}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

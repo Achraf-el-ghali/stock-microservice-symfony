@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+    <div class="card-body">
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.type) }}
+            {{ form_widget(form.type) }}
+            {{ form_errors(form.type) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.value) }}
+            {{ form_widget(form.value) }}
+            {{ form_errors(form.value) }}
+        </div>
+    </div>
+    <div class="card-footer text-right">
+        <a href="{{ path('app_promotion_index') }}" class="btn btn-default">Cancel</a>
+        <button class="btn btn-success">{{ button_label|default('Save Promotion') }}</button>
+    </div>
+{{ form_end(form) }}

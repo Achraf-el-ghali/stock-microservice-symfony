@@ -12,21 +12,18 @@ use App\Entity\Promotion;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StockRepository;
+use App\Service\CsvImportService;
 
 #[AsCommand(
     name: 'app:promo:import',
     description: 'Import promotions from CSV'
 )]
+//php bin/console app:stock:import promo.csv
 class PromoImportCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private StockRepository $stockRepository;
-
-    public function __construct(EntityManagerInterface $em, StockRepository $stockRepository)
+    public function __construct(private CsvImportService $importService)
     {
         parent::__construct();
-        $this->em = $em;
-        $this->stockRepository = $stockRepository;
     }
 
     protected function configure(): void
@@ -39,44 +36,14 @@ class PromoImportCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $csvFile = $input->getArgument('file');
 
-        if (!file_exists($csvFile)) {
-            $io->error("File not found");
+        $count = $this->importService->importPromotions($csvFile);
+
+        if ($count === 0) {
+            $io->error("No promotions imported.");
             return Command::FAILURE;
         }
 
-        $handle = fopen($csvFile, 'r');
-
-        // skip header
-        fgetcsv($handle);
-
-        while (($data = fgetcsv($handle)) !== false) {
-
-            $sku = $data[0];
-            $description = $data[1];
-            $type = $data[2];
-            $value = (float)$data[3];
-
-            $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
-
-            if (!$stock) {
-                $io->warning("SKU not found: $sku");
-                continue;
-            }
-
-            $promotion = new Promotion();
-            $promotion->setDescription($description);
-            $promotion->setType($type);
-            $promotion->setValue($value);
-            $stock->addPromotion($promotion);
-
-            $this->em->persist($promotion);
-
-            $io->text("SKU: $sku | $description | $type | $value");
-        }
-
-        fclose($handle);
-
-        $this->em->flush();
+        $io->success(sprintf("Imported %d promotions successfully", $count));
 
         $io->success("Promotions imported successfully");
 
