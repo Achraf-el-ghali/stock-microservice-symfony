@@ -101,10 +101,13 @@ class CsvSyncService
         fputcsv($handle, ['sku', 'total_quantity', 'last_selling_price']);
 
         foreach ($stocks as $stock) {
+            $latestLot = $this->stockLotRepository->findLatestLotBySku($stock->getSku());
+            $price = $latestLot ? $latestLot->getSellingPrice() : 0.0;
+
             fputcsv($handle, [
                 $stock->getSku(),
                 $stock->getQuantity(),
-                $stock->getPrice() // Stock entity stores latest price
+                $price
             ]);
         }
 

@@ -30,6 +30,17 @@ class StockLotRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findLatestLotBySku(string $sku): ?StockLot
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.sku = :sku')
+            ->setParameter('sku', $sku)
+            ->orderBy('s.dateEntry', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function existsByImportReference(string $reference): bool
     {
         return $this->count(['importReference' => $reference]) > 0;

@@ -6,10 +6,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use App\Entity\Promotion;
 use App\Repository\StockRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,14 +16,18 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['stock:read']],
     operations: [
         new GetCollection(),
-        new Get()
+        new Get(
+            uriTemplate: '/stocks/{sku}',
+            controller: \App\Controller\GetStockController::class,
+            read: false,
+            name: 'get_stock'
+        )
     ]
 )]
 class Stock
 {
     public function __construct()
     {
-        $this->promotions = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -46,39 +47,9 @@ class Stock
     private int $quantity = 0;
 
     #[ORM\Column]
-    #[Assert\PositiveOrZero]
-    #[Groups(['stock:read'])]
-    private float $price = 0;
-
-    #[ORM\ManyToMany(targetEntity: Promotion::class, inversedBy: 'stocks')]
-    #[ORM\JoinTable(name: "stock_promotion")]
-    #[Groups(['stock:read'])]
-    private Collection $promotions;
-
-    #[ORM\Column]
     #[Groups(['stock:read'])]
     private bool $isActive = true;
 
-    public function addPromotion(Promotion $promotion): static
-    {
-        if (!$this->promotions->contains($promotion)) {
-            $this->promotions->add($promotion);
-        }
-
-        return $this;
-    }
-
-    public function removePromotion(Promotion $promotion): static
-    {
-        $this->promotions->removeElement($promotion);
-
-        return $this;
-    }
-
-    public function getPromotions(): Collection
-    {
-        return $this->promotions;
-    }
 
     public function getId(): ?int
     {
@@ -107,16 +78,6 @@ class Stock
         return $this;
     }
 
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): static
-    {
-        $this->price = $price;
-        return $this;
-    }
 
     #[Groups(['stock:read'])]
     public function isInStock(): bool
@@ -130,23 +91,6 @@ class Stock
         return $this->quantity > 0 ? "available" : "out_of_stock";
     }
 
-    #[Groups(['stock:read'])]
-        public function getFinalPrice(): float
-        {
-            $finalPrice = $this->price;
-
-            foreach ($this->promotions as $promo) {
-                if ($promo->getType() === "percentage") {
-                    $finalPrice -= $finalPrice * ($promo->getValue() / 100);
-                }
-
-                if ($promo->getType() === "cash") {
-                    $finalPrice -= $promo->getValue();
-                }
-            }
-
-            return $finalPrice;
-        }
 
     public function getIsActive(): bool
     {

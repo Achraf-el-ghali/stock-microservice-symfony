@@ -16,6 +16,7 @@ class GetStockController extends AbstractController
 {
     public function __construct(
         private StockRepository $stockRepository,
+        private \App\Repository\StockLotRepository $stockLotRepository,
     ) {}
 
     public function __invoke(string $sku): JsonResponse
@@ -26,11 +27,13 @@ class GetStockController extends AbstractController
             return $this->json(['error' => 'Stock not found'], 404);
         }
 
+        $latestLot = $this->stockLotRepository->findLatestLotBySku($sku);
+        $price = $latestLot ? $latestLot->getSellingPrice() : 0.0;
+
         $data = [
             'sku' => $stock->getSku(),
-            'price' => $stock->getPrice(),
+            'price' => $price,
             'quantity' => $stock->getQuantity(),
-            'finalPrice' => $stock->getFinalPrice(),
             'isActive' => $stock->getIsActive(),
         ];
 
