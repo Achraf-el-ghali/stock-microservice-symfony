@@ -129,7 +129,8 @@ public function getStockBySku(
         'sku' => $stock->getSku(),
         'price' => $price,
         'quantity' => $stock->getQuantity(),
-        'isActive' => $stock->getIsActive()
+        'isActive' => $stock->getIsActive(),
+        'finalPrice' => $stock->getFinalPrice()
     ]);
 }
 
@@ -167,7 +168,8 @@ public function getStockBySku(
                 'sku' => $sku,
                 'added_quantity' => $quantity,
                 'total_quantity' => $stock ? $stock->getQuantity() : 0,
-                'selling_price' => $sellingPrice
+                'selling_price' => $sellingPrice,
+                'finalPrice' => $stock ? $stock->getFinalPrice() : 0.0
             ]);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 500);

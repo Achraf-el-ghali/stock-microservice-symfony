@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\StockRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,6 +30,7 @@ class Stock
 {
     public function __construct()
     {
+        $this->promotions = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -46,10 +49,17 @@ class Stock
     #[Groups(['stock:read'])]
     private int $quantity = 0;
 
+    #[ORM\Column(type: 'float', options: ['default' => 0.0])]
+    #[Groups(['stock:read'])]
+    private float $price = 0.0;
+
+    #[ORM\ManyToMany(targetEntity: Promotion::class, inversedBy: 'stocks')]
+    #[ORM\JoinTable(name: 'stock_promotion')]
+    private Collection $promotions;
+
     #[ORM\Column]
     #[Groups(['stock:read'])]
     private bool $isActive = true;
-
 
     public function getId(): ?int
     {
@@ -78,6 +88,49 @@ class Stock
         return $this;
     }
 
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    public function getPromotions(): Collection
+    {
+        return $this->promotions;
+    }
+
+    public function addPromotion(Promotion $promotion): static
+    {
+        if (!$this->promotions->contains($promotion)) {
+            $this->promotions->add($promotion);
+        }
+        return $this;
+    }
+
+    public function removePromotion(Promotion $promotion): static
+    {
+        $this->promotions->removeElement($promotion);
+        return $this;
+    }
+
+    #[Groups(['stock:read'])]
+    public function getFinalPrice(): float
+    {
+        $finalPrice = $this->price;
+        foreach ($this->promotions as $promotion) {
+            if ($promotion->getType() === 'percentage') {
+                $finalPrice -= $finalPrice * $promotion->getValue() / 100;
+            } else {
+                $finalPrice -= $promotion->getValue();
+            }
+        }
+        return max(0.0, $finalPrice);
+    }
 
     #[Groups(['stock:read'])]
     public function isInStock(): bool
@@ -91,7 +144,6 @@ class Stock
         return $this->quantity > 0 ? "available" : "out_of_stock";
     }
 
-
     public function getIsActive(): bool
     {
         return $this->isActive;
@@ -100,17 +152,6 @@ class Stock
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-        return $this;
-    }
-
-    public function getReserved(): int
-    {
-        return $this->reserved;
-    }
-
-    public function setReserved(int $reserved): static
-    {
-        $this->reserved = $reserved;
         return $this;
     }
 }
