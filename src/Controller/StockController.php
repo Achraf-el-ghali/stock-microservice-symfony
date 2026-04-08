@@ -118,6 +118,23 @@ final class StockController extends AbstractController
 
         return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/stock/{id}/sync', name: 'app_stock_sync', methods: ['POST'])]
+    public function sync(Request $request, Stock $stock, KafkaProducer $producer): Response
+    {
+        if ($this->isCsrfTokenValid('sync'.$stock->getId(), $request->getPayload()->getString('_token'))) {
+            $kafkaType = match(true) {
+                $stock->getQuantity() === 0  => 'STOCK_OUT',
+                $stock->getQuantity() < 10   => 'STOCK_LOW',
+                default                      => 'STOCK_ADD',
+            };
+            $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), $kafkaType);
+            $this->addFlash('success', 'SKU ' . $stock->getSku() . ' synchronisé vers Kafka.');
+        }
+
+        return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/stock/import', name: 'app_stock_import', methods: ['POST'])]
     public function import(CsvImportService $csvImportService): Response
     {

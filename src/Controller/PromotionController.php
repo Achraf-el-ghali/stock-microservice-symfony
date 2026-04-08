@@ -42,7 +42,9 @@ class PromotionController extends AbstractController
 
             // Send notification to clients
             $notifier->sendNotification(
-                sprintf("🔥 Promotion Flash ! -%d%% sur les articles liés jusqu'à ce weekend ! 🚀", $promotion->getDiscountPercentage()),
+                sprintf("🔥 Promotion Flash ! -%s%s sur les articles liés jusqu'à ce weekend ! 🚀",
+                    $promotion->getValue(),
+                    $promotion->getType() === 'percentage' ? '%' : '€'),
                 "NEW_PROMOTION"
             );
 
@@ -55,7 +57,7 @@ class PromotionController extends AbstractController
         ]);
     }
 
-    #[Route('/promotion/import', name: 'app_promotion_import', methods: ['POST'])]
+    #[Route('/import', name: 'app_promotion_import', methods: ['POST'])]
     public function import(Request $request, CsvImportService $importService): Response
     {
         $projectDir = $this->getParameter('kernel.project_dir');
@@ -88,7 +90,9 @@ class PromotionController extends AbstractController
 
             // Send notification to clients about update
             $notifier->sendNotification(
-                sprintf("✨ Mise à jour Promotion : -%d%% de réduction ! Profitez-en maintenant !", $promotion->getDiscountPercentage()),
+                sprintf("✨ Mise à jour Promotion : -%s%s de réduction ! Profitez-en maintenant !",
+                    $promotion->getValue(),
+                    $promotion->getType() === 'percentage' ? '%' : '€'),
                 "DISCOUNT_EVENT"
             );
 
