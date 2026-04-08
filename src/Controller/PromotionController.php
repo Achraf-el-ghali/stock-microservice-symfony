@@ -37,7 +37,7 @@ class PromotionController extends AbstractController
 
             // Sync linked stocks to Kafka
             foreach ($promotion->getStocks() as $stock) {
-                $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+                $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), 'NEW_PROMOTION');
             }
 
             // Send notification to clients
@@ -83,7 +83,7 @@ class PromotionController extends AbstractController
 
             // Sync linked stocks to Kafka
             foreach ($promotion->getStocks() as $stock) {
-                $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+                $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), 'DISCOUNT_EVENT');
             }
 
             // Send notification to clients about update

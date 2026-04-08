@@ -50,7 +50,7 @@ final class StockController extends AbstractController
             }
 
             // Sync to Kafka
-            $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+            $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), 'STOCK_ADD');
 
             // Envoi d'une notification temps réel !
             $notifier->sendNotification("Nouveau produit SKU: " . $stock->getSku() . " ajouté au stock.", "STOCK_ADD");
@@ -73,11 +73,17 @@ final class StockController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Get original quantity to check for 'Back in stock'
             $originalQuantity = $entityManager->getUnitOfWork()->getOriginalEntityData($stock)['quantity'] ?? 0;
-            
+
             $entityManager->flush();
 
-            // Sync to Kafka
-            $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+            // Sync to Kafka — derive type to match what the notifier will send
+            $kafkaType = match(true) {
+                $originalQuantity === 0 && $stock->getQuantity() > 0 => 'BACK_IN_STORE',
+                $stock->getQuantity() === 0                          => 'STOCK_OUT',
+                $stock->getQuantity() < 10                           => 'STOCK_LOW',
+                default                                              => 'STOCK_ADD',
+            };
+            $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), $kafkaType);
 
             // Envoi de l'alerte temps réel 
             if ($originalQuantity === 0 && $stock->getQuantity() > 0) {
@@ -207,7 +213,7 @@ public function getStockBySku(
     public function sendProduct(KafkaProducer $producer): JsonResponse
     {
         $sku = "OIL-5W30-MAX-1";
-        $producer->sendProduct($sku, 200, 50);
+        $producer->sendProduct($sku, 200, 50, 'STOCK_ADD');
 
         return $this->json(["message" => "Test product sent to kafka: $sku"]);
     }

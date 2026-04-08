@@ -117,36 +117,51 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:8081/notificationHub")
+            .withUrl("http://localhost:5001/notificationHub")
             .withAutomaticReconnect()
+            .configureLogging(signalR.LogLevel.Information)
             .build();
 
-        connection.on("ReceiveNotification", function(message, type) {
+        // Map notification type -> Toastr method
+        const toastMap = {
+            "STOCK_ADD":     "success",
+            "STOCK_LOW":     "warning",
+            "STOCK_OUT":     "error",
+            "STOCK_ALERT":   "error",
+            "BACK_IN_STORE": "info",
+            "NEW_PROMOTION": "success",
+            "DISCOUNT_EVENT":"info"
+        };
+
+        // Hub sends a single payload object: { message, type, timestamp, sku, price, quantity }
+        connection.on("ReceiveNotification", function (payload) {
+            const data      = typeof payload === "string" ? JSON.parse(payload) : payload;
+            const type      = data.type    || "UNKNOWN";
+            const msg       = data.message || "No message";
+            const ts        = data.timestamp ? new Date(data.timestamp).toLocaleString() : "";
+            const toastType = toastMap[type] || "info";
+            const title     = ts ? type + " – " + ts : type;
+
             toastr.options = {
-                "closeButton": true,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "timeOut": "5000",
+                closeButton: true,
+                progressBar: true,
+                positionClass: "toast-top-right",
+                timeOut: "7000",
+                extendedTimeOut: "1000"
             };
-            
-            if (type === "STOCK_OUT" || type === "STOCK_ALERT") {
-                toastr.error(message, "Alert!");
-            } else if (type === "STOCK_WARNING") {
-                toastr.warning(message, "Warning");
-            } else {
-                toastr.info(message, "Notification");
-            }
+
+            toastr[toastType](msg, title);
         });
 
-        connection.start().then(function() {
-            console.log("Connected to SignalR notification hub");
-        }).catch(function(err) {
-            console.error("SignalR Connection Error: ", err.toString());
-            toastr.options = { "closeButton": true, "progressBar": true, "positionClass": "toast-bottom-right", "timeOut": "8000" };
-            toastr.warning("Real-time notifications unavailable. Could not connect to the notification hub.", "Connection Error");
-        });
+        connection.start()
+            .then(function () { console.log("Connected to SignalR hub (port 5001)"); })
+            .catch(function (err) {
+                console.error("SignalR connection error:", err.toString());
+                toastr.options = { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", timeOut: "8000" };
+                toastr.warning("Real-time notifications unavailable. Could not connect to the notification hub.", "Connection Error");
+            });
     });
 </script>
 

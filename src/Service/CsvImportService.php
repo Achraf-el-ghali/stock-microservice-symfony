@@ -39,7 +39,7 @@ class CsvImportService
             $stock->setPrice($price);
 
             $this->em->persist($stock);
-            $this->producer->sendProduct($sku, $stock->getFinalPrice(), $quantity);
+            $this->producer->sendProduct($sku, $stock->getFinalPrice(), $quantity, 'STOCK_ADD');
             $count++;
         }
 
@@ -78,7 +78,7 @@ class CsvImportService
 
             $this->em->persist($promotion);
             // Sync updated price (due to new promotion) to Kafka
-            $this->producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+            $this->producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity(), 'NEW_PROMOTION');
             $count++;
         }
 
