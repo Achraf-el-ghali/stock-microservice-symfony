@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('css/professional-table.css') }}">
 
     {% block stylesheets %}{% endblock %}
@@ -106,7 +107,36 @@
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+
+{# ── SweetAlert2 — Confirmation de suppression ── #}
+<script>
+    function confirmDelete(btn, itemLabel) {
+        const form = btn.closest('form');
+        Swal.fire({
+            title: 'Confirmer la suppression',
+            html:  'Voulez-vous vraiment supprimer <strong>' + itemLabel + '</strong> ?<br><small class="text-muted">Cette action est irréversible.</small>',
+            icon:  'warning',
+            showCancelButton:  true,
+            confirmButtonText: '<i class="fas fa-trash mr-1"></i> Supprimer',
+            cancelButtonText:  '<i class="fas fa-times mr-1"></i> Annuler',
+            confirmButtonColor: '#605ca8',
+            cancelButtonColor:  '#6c757d',
+            focusCancel:  true,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-sm px-4',
+                cancelButton:  'btn btn-sm px-4 mr-2'
+            },
+            buttonsStyling: true
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+</script>
 
 {# ── Flash messages → Toastr ── #}
 {% set flashMap = {'success': 'success', 'danger': 'error', 'warning': 'warning', 'info': 'info'} %}

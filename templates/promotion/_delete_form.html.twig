@@ -1,6 +1,9 @@
-<form method="post" action="{{ path('app_promotion_delete', {'id': promotion.id}) }}" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this promotion?');">
+<form method="post" action="{{ path('app_promotion_delete', {'id': promotion.id}) }}" style="display:inline-block;">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ promotion.id) }}">
-    <button class="btn btn-danger btn-xs shadow-sm" title="Delete">
+    <button type="button"
+            class="btn btn-danger btn-xs shadow-sm"
+            title="Supprimer"
+            onclick="confirmDelete(this, '{{ promotion.description|e('html_attr') }}')">
         <i class="fas fa-trash"></i>
     </button>
 </form>
