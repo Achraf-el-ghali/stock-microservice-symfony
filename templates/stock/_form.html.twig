@@ -1,50 +1,191 @@
-{{ form_start(form) }}
-    <div class="card-body">
-        <div class="form-group">
-            {{ form_label(form.sku) }}
-            {{ form_widget(form.sku) }}
-            {{ form_errors(form.sku) }}
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    {{ form_label(form.price) }}
-                    {{ form_widget(form.price) }}
-                    {{ form_errors(form.price) }}
+{# ── Hidden Symfony checkboxes (synced by JS) ── #}
+{{ form_start(form, {'attr': {'id': 'stockForm', 'novalidate': 'novalidate'}}) }}
+
+{# Hidden promotions checkboxes – visually replaced by chips below #}
+<div style="display:none;" aria-hidden="true">
+    {% for promo in form.promotions %}
+        {{ form_widget(promo) }}
+    {% endfor %}
+</div>
+
+<div class="row">
+
+    {# ══════════════════════════════════
+       LEFT — Product Details
+    ══════════════════════════════════ #}
+    <div class="col-lg-8 mb-4">
+        <div class="form-card">
+            <div class="form-card-header">
+                <span class="form-card-icon"><i class="fas fa-box-open"></i></span>
+                <div>
+                    <h6 class="mb-0">Informations Produit</h6>
+                    <small class="text-muted">Identifiant, prix et stock disponible</small>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    {{ form_label(form.quantity) }}
-                    {{ form_widget(form.quantity) }}
-                    {{ form_errors(form.quantity) }}
+            <div class="form-card-body">
+
+                {# SKU #}
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.sku.vars.id }}">
+                        Référence SKU <span class="required-star">*</span>
+                    </label>
+                    <div class="input-icon-group">
+                        <span class="input-icon"><i class="fas fa-barcode"></i></span>
+                        {{ form_widget(form.sku, {
+                            'attr': {
+                                'class': 'field-input' ~ (form.sku.vars.valid is defined and not form.sku.vars.valid ? ' is-invalid' : ''),
+                                'placeholder': 'ex : OIL-5W30-MAX-1',
+                                'autocomplete': 'off',
+                                'data-validate': 'sku'
+                            }
+                        }) }}
+                    </div>
+                    <div class="field-hint"><i class="fas fa-info-circle mr-1"></i>Majuscules, chiffres et tirets uniquement.</div>
+                    {% if form.sku.vars.errors|length > 0 %}
+                        <div class="field-error"><i class="fas fa-exclamation-circle mr-1"></i>{{ form_errors(form.sku) }}</div>
+                    {% endif %}
+                    <div class="field-error" id="sku-error" style="display:none;"></div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 pt-4">
-                <div class="form-check">
-                    {{ form_widget(form.isActive) }}
-                    {{ form_label(form.isActive, 'Is Active', {'label_attr': {'class': 'form-check-label'}}) }}
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Apply Promotions</label>
-            <div class="row">
-                {% for promotion in form.promotions %}
-                <div class="col-md-4">
-                    <div class="form-check">
-                        {{ form_widget(promotion) }}
-                        {{ form_label(promotion, null, {'label_attr': {'class': 'form-check-label'}}) }}
+
+                {# Price + Quantity #}
+                <div class="row mt-3">
+                    <div class="col-sm-6">
+                        <div class="field-group">
+                            <label class="field-label" for="{{ form.price.vars.id }}">
+                                Prix de base <span class="required-star">*</span>
+                            </label>
+                            <div class="input-icon-group">
+                                <span class="input-icon"><i class="fas fa-euro-sign"></i></span>
+                                {{ form_widget(form.price, {
+                                    'attr': {
+                                        'class': 'field-input',
+                                        'placeholder': '0.00',
+                                        'step': '0.01',
+                                        'min': '0',
+                                        'data-validate': 'price'
+                                    }
+                                }) }}
+                                <span class="input-suffix">€</span>
+                            </div>
+                            {% if form.price.vars.errors|length > 0 %}
+                                <div class="field-error"><i class="fas fa-exclamation-circle mr-1"></i>{{ form_errors(form.price) }}</div>
+                            {% endif %}
+                            <div class="field-error" id="price-error" style="display:none;"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="field-group">
+                            <label class="field-label" for="{{ form.quantity.vars.id }}">
+                                Quantité initiale <span class="required-star">*</span>
+                            </label>
+                            <div class="input-icon-group">
+                                <span class="input-icon"><i class="fas fa-cubes"></i></span>
+                                {{ form_widget(form.quantity, {
+                                    'attr': {
+                                        'class': 'field-input',
+                                        'placeholder': '0',
+                                        'min': '0',
+                                        'data-validate': 'quantity'
+                                    }
+                                }) }}
+                                <span class="input-suffix">unités</span>
+                            </div>
+                            {% if form.quantity.vars.errors|length > 0 %}
+                                <div class="field-error"><i class="fas fa-exclamation-circle mr-1"></i>{{ form_errors(form.quantity) }}</div>
+                            {% endif %}
+                            <div class="field-error" id="quantity-error" style="display:none;"></div>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
+
             </div>
         </div>
     </div>
-    <div class="card-footer text-right">
-        <a href="{{ path('app_stock') }}" class="btn btn-default">Cancel</a>
-        <button class="btn btn-primary">{{ button_label|default('Save Stock') }}</button>
+
+    {# ══════════════════════════════════
+       RIGHT — Settings + Promotions
+    ══════════════════════════════════ #}
+    <div class="col-lg-4 mb-4">
+
+        {# Configuration Card #}
+        <div class="form-card mb-3">
+            <div class="form-card-header">
+                <span class="form-card-icon"><i class="fas fa-sliders-h"></i></span>
+                <div>
+                    <h6 class="mb-0">Configuration</h6>
+                    <small class="text-muted">Visibilité du produit</small>
+                </div>
+            </div>
+            <div class="form-card-body">
+                <div class="toggle-row">
+                    <div>
+                        <div class="toggle-label">Produit actif</div>
+                        <small class="text-muted">Visible dans le catalogue</small>
+                    </div>
+                    <label class="toggle-switch">
+                        {{ form_widget(form.isActive, {'attr': {'class': 'toggle-input'}}) }}
+                        <span class="toggle-track">
+                            <span class="toggle-thumb"></span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        {# Promotions Card #}
+        <div class="form-card">
+            <div class="form-card-header">
+                <span class="form-card-icon"><i class="fas fa-tags"></i></span>
+                <div>
+                    <h6 class="mb-0">Promotions</h6>
+                    <small class="text-muted">Cliquez pour sélectionner</small>
+                </div>
+            </div>
+            <div class="form-card-body">
+                {% if form.promotions|length == 0 %}
+                    <div class="empty-promos">
+                        <i class="fas fa-tag"></i>
+                        <span>Aucune promotion disponible.<br>
+                        <a href="{{ path('app_promotion_new') }}" class="text-primary">En créer une</a></span>
+                    </div>
+                {% else %}
+                    <div class="chips-container" id="promoChips">
+                        {% for promo in form.promotions %}
+                            {% set isChecked = promo.vars.checked is defined and promo.vars.checked %}
+                            <span class="promo-chip {{ isChecked ? 'chip-selected' : '' }}"
+                                  data-value="{{ promo.vars.value }}"
+                                  data-name="{{ promo.vars.name }}"
+                                  role="checkbox"
+                                  aria-checked="{{ isChecked ? 'true' : 'false' }}"
+                                  tabindex="0"
+                                  title="{{ promo.vars.label }}">
+                                <i class="fas fa-percentage chip-icon"></i>
+                                <span class="chip-text">{{ promo.vars.label }}</span>
+                                <i class="fas fa-check chip-check"></i>
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <div class="chips-hint" id="chipsHint">
+                        <span id="chipsCount">0</span> promotion(s) sélectionnée(s)
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
     </div>
+</div>
+
+{# ══════════════════════════════════
+   Footer Actions
+══════════════════════════════════ #}
+<div class="form-actions">
+    <a href="{{ path('app_stock') }}" class="btn-cancel">
+        <i class="fas fa-arrow-left mr-1"></i> Annuler
+    </a>
+    <button type="submit" class="btn-save" id="saveBtn">
+        <i class="fas fa-save mr-1" id="saveBtnIcon"></i>
+        <span id="saveBtnLabel">{{ button_label|default('Enregistrer le Stock') }}</span>
+    </button>
+</div>
+
 {{ form_end(form) }}

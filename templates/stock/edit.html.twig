@@ -1,20 +1,148 @@
 {% extends 'adminlte.html.twig' %}
 
-{% block title %}Edit Stock Item{% endblock %}
-{% block page_title %}Edit Stock #{{ stock.id }}{% endblock %}
+{% block title %}Modifier {{ stock.sku }} — Gearoil{% endblock %}
+{% block page_title %}Modifier un Stock{% endblock %}
+
+{% block stylesheets %}
+{{ block('formStyles') }}
+{% endblock %}
 
 {% block body %}
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">Update Stock Details</h3>
-                <div class="card-tools">
-                    <span class="badge badge-light">SKU: {{ stock.sku }}</span>
-                </div>
-            </div>
-            {{ include('stock/_form.html.twig', {'button_label': 'Update Stock'}) }}
-        </div>
-    </div>
-</div>
+
+{# ── Breadcrumb ── #}
+<nav class="form-breadcrumb mb-4">
+    <a href="{{ path('app_stock') }}" class="breadcrumb-link">
+        <i class="fas fa-warehouse mr-1"></i> Stocks
+    </a>
+    <i class="fas fa-chevron-right mx-2 breadcrumb-sep"></i>
+    <span class="breadcrumb-current">
+        <i class="fas fa-barcode mr-1" style="color:#605ca8;"></i>
+        <strong style="color:#605ca8;">{{ stock.sku }}</strong>
+    </span>
+</nav>
+
+{{ include('stock/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+{% endblock %}
+
+{% block formStyles %}
+<style>
+.content-wrapper { background: #f8f7ff; }
+.form-breadcrumb { display:flex; align-items:center; font-size:.85rem; }
+.breadcrumb-link  { color:#605ca8; font-weight:500; text-decoration:none; }
+.breadcrumb-link:hover { color:#4f4b8e; text-decoration:underline; }
+.breadcrumb-sep   { color:#c4c1e8; font-size:.7rem; }
+.breadcrumb-current { color:#6b7280; }
+.form-card { background:#fff; border-radius:14px; border:1px solid #ebe8ff; box-shadow:0 2px 12px rgba(96,92,168,.07); overflow:hidden; }
+.form-card-header { display:flex; align-items:center; gap:12px; padding:16px 20px; background:linear-gradient(135deg,#faf9ff 0%,#f3f0ff 100%); border-bottom:1px solid #ebe8ff; }
+.form-card-icon { width:38px; height:38px; border-radius:10px; background:#605ca8; color:#fff; display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; }
+.form-card-header h6 { color:#3d3a5e; font-weight:700; font-size:.95rem; }
+.form-card-body { padding:20px; }
+.field-group { margin-bottom:0; }
+.field-label { font-size:.82rem; font-weight:600; color:#4b4880; margin-bottom:6px; display:block; }
+.required-star { color:#e05; }
+.input-icon-group { position:relative; display:flex; align-items:center; }
+.input-icon { position:absolute; left:12px; z-index:2; color:#a09dd4; font-size:.85rem; pointer-events:none; }
+.input-suffix { position:absolute; right:12px; color:#a09dd4; font-size:.8rem; pointer-events:none; }
+.field-input { width:100%; padding:10px 48px 10px 36px; border:1.5px solid #e4e2f5; border-radius:10px; font-size:.9rem; color:#3d3a5e; background:#fdfcff; transition:border-color .15s, box-shadow .15s; outline:none; -webkit-appearance:none; }
+.field-input:focus { border-color:#605ca8; box-shadow:0 0 0 3px rgba(96,92,168,.12); background:#fff; }
+.field-input.is-valid   { border-color:#28a745; }
+.field-input.is-invalid { border-color:#dc3545; }
+.field-input[data-validate="price"],.field-input[data-validate="quantity"] { padding-right:60px; }
+.field-hint  { font-size:.75rem; color:#9ca3af; margin-top:5px; }
+.field-error { font-size:.78rem; color:#dc3545; margin-top:4px; font-weight:500; }
+.toggle-row { display:flex; align-items:center; justify-content:space-between; }
+.toggle-label { font-weight:600; font-size:.9rem; color:#3d3a5e; }
+.toggle-switch { position:relative; display:inline-block; flex-shrink:0; }
+.toggle-input  { position:absolute; opacity:0; width:0; height:0; }
+.toggle-track  { display:block; width:44px; height:24px; background:#d1cdf0; border-radius:12px; cursor:pointer; transition:background .2s; }
+.toggle-input:checked + .toggle-track { background:#605ca8; }
+.toggle-thumb  { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .2s; }
+.toggle-input:checked ~ .toggle-track .toggle-thumb { left:23px; }
+.chips-container { display:flex; flex-wrap:wrap; gap:8px; }
+.promo-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:20px; border:1.5px solid #d4d0f0; background:#faf9ff; color:#6b6498; font-size:.8rem; font-weight:500; cursor:pointer; transition:all .18s ease; user-select:none; }
+.promo-chip:hover { border-color:#605ca8; background:#ede9ff; color:#605ca8; transform:translateY(-1px); }
+.promo-chip.chip-selected { background:#605ca8; border-color:#605ca8; color:#fff; box-shadow:0 2px 8px rgba(96,92,168,.3); }
+.chip-icon  { font-size:.7rem; }
+.chip-check { font-size:.65rem; opacity:0; transition:opacity .15s; }
+.chip-selected .chip-check { opacity:1; }
+.chips-hint { margin-top:10px; font-size:.75rem; color:#9ca3af; }
+.empty-promos { display:flex; align-items:center; gap:10px; padding:14px; border-radius:10px; background:#f9f8ff; border:1px dashed #d4d0f0; color:#a09dd4; font-size:.85rem; }
+.empty-promos i { font-size:1.2rem; flex-shrink:0; }
+.form-actions { display:flex; justify-content:flex-end; align-items:center; gap:12px; padding:16px 0 4px; }
+.btn-cancel { display:inline-flex; align-items:center; padding:10px 20px; border-radius:10px; border:1.5px solid #d4d0f0; background:#fff; color:#6b7280; font-weight:500; font-size:.9rem; text-decoration:none; transition:all .15s; }
+.btn-cancel:hover { border-color:#605ca8; color:#605ca8; background:#faf9ff; text-decoration:none; }
+.btn-save { display:inline-flex; align-items:center; gap:6px; padding:10px 28px; border-radius:10px; background:#605ca8; border:none; color:#fff; font-weight:600; font-size:.9rem; cursor:pointer; transition:all .18s; box-shadow:0 2px 10px rgba(96,92,168,.3); }
+.btn-save:hover { background:#4f4b8e; box-shadow:0 4px 16px rgba(96,92,168,.4); transform:translateY(-1px); }
+.btn-save.saving { background:#7b77c9; cursor:not-allowed; }
+.btn-save.saved  { background:#28a745; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var toggleInput = document.querySelector('.toggle-input');
+    if (toggleInput) {
+        var track = toggleInput.nextElementSibling;
+        if (track) track.addEventListener('click', function () { toggleInput.checked = !toggleInput.checked; });
+    }
+
+    document.querySelectorAll('.promo-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () { toggleChip(this); });
+        chip.addEventListener('keydown', function (e) { if (e.key===' '||e.key==='Enter'){e.preventDefault();toggleChip(this);} });
+    });
+
+    function toggleChip(chip) {
+        var checkbox = document.querySelector('input[type="checkbox"][value="' + chip.dataset.value + '"]');
+        if (!checkbox) return;
+        checkbox.checked = !checkbox.checked;
+        chip.classList.toggle('chip-selected', checkbox.checked);
+        chip.setAttribute('aria-checked', checkbox.checked ? 'true' : 'false');
+        updateChipsCount();
+    }
+    function updateChipsCount() {
+        var el = document.getElementById('chipsCount');
+        if (el) el.textContent = document.querySelectorAll('.promo-chip.chip-selected').length;
+    }
+    updateChipsCount();
+
+    var rules = {
+        sku:      { required:true, pattern:/^[A-Z0-9][A-Z0-9\-]{1,}$/i, msg:'Format requis : ex. OIL-5W30-001' },
+        price:    { required:true, min:0,   msg:'Le prix doit être ≥ 0' },
+        quantity: { required:true, min:0, integer:true, msg:'La quantité doit être un entier ≥ 0' }
+    };
+    document.querySelectorAll('.field-input').forEach(function(input){
+        input.addEventListener('blur', function(){validateField(this);});
+        input.addEventListener('input', function(){if(this.classList.contains('is-invalid'))validateField(this);});
+    });
+    function validateField(input) {
+        var key=input.dataset.validate, rule=rules[key];
+        if(!rule) return;
+        var val=input.value.trim(), ok=true, msg='';
+        var errDiv=document.getElementById(key+'-error');
+        if(rule.required&&!val){ok=false;msg='Ce champ est requis.';}
+        else if(rule.pattern&&!rule.pattern.test(val)){ok=false;msg=rule.msg;}
+        else if(rule.min!==undefined&&parseFloat(val)<rule.min){ok=false;msg=rule.msg;}
+        else if(rule.integer&&!Number.isInteger(Number(val))){ok=false;msg=rule.msg;}
+        input.classList.toggle('is-valid',ok);
+        input.classList.toggle('is-invalid',!ok);
+        if(errDiv){errDiv.textContent=ok?'':msg; errDiv.style.display=ok?'none':'block';}
+    }
+
+    var form=document.getElementById('stockForm');
+    var saveBtn=document.getElementById('saveBtn');
+    var saveIcon=document.getElementById('saveBtnIcon');
+    var saveLabel=document.getElementById('saveBtnLabel');
+    form.addEventListener('submit', function(e){
+        var valid=true;
+        document.querySelectorAll('.field-input').forEach(function(i){validateField(i);if(i.classList.contains('is-invalid'))valid=false;});
+        if(!valid){e.preventDefault();saveBtn.style.animation='shake .35s ease';setTimeout(function(){saveBtn.style.animation='';},400);return;}
+        saveBtn.classList.add('saving'); saveBtn.disabled=true;
+        saveIcon.className='fas fa-spinner fa-spin mr-1';
+        saveLabel.textContent='Mise à jour…';
+    });
+});
+</script>
 {% endblock %}
