@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Stock;
 use App\Entity\StockLot;
 use App\Entity\StockMovement;
+use App\Entity\ProcessedEvent;
 use App\Repository\StockLotRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,10 +21,15 @@ class StockManager
     /**
      * Adds stock by creating a new lot and updating the summary.
      */
-    public function addStock(string $sku, int $quantity, float $purchasePrice, float $sellingPrice, string $source = 'stock_added', ?string $importReference = null): void
+    public function addStock(string $sku, int $quantity, float $purchasePrice, float $sellingPrice, string $source = 'stock_added', ?string $importReference = null, ?string $eventId = null): void
     {
         $this->entityManager->beginTransaction();
         try {
+            // 0. Idempotency Check
+            if ($eventId) {
+                $this->recordProcessedEvent($eventId);
+            }
+
             // 1. Update or Create Stock Summary
             $stock = $this->stockRepository->findOneBy(['sku' => $sku]);
             if (!$stock) {
@@ -72,7 +78,7 @@ class StockManager
     /**
      * Decreases stock using FIFO logic across available lots.
      */
-    public function decreaseStock(string $sku, int $quantity, string $source): void
+    public function decreaseStock(string $sku, int $quantity, string $source, ?string $eventId = null): void
     {
         if ($quantity <= 0) {
             return;
@@ -80,6 +86,11 @@ class StockManager
 
         $this->entityManager->beginTransaction();
         try {
+            // 0. Idempotency Check
+            if ($eventId) {
+                $this->recordProcessedEvent($eventId);
+            }
+
             // 1. Lock Stock Summary for Concurrency
             $stock = $this->stockRepository->findOneBySkuWithLock($sku);
             if (!$stock) {
@@ -130,5 +141,16 @@ class StockManager
             $this->entityManager->rollback();
             throw $e;
         }
+    }
+
+    /**
+     * Records an event as processed within the current transaction.
+     */
+    private function recordProcessedEvent(string $eventId): void
+    {
+        $processedEvent = new ProcessedEvent();
+        $processedEvent->setEventId($eventId);
+        $processedEvent->setServiceName('stock-service');
+        $this->entityManager->persist($processedEvent);
     }
 }

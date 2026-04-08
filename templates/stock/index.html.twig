@@ -4,103 +4,113 @@
 {% block page_title %}Stock Management{% endblock %}
 
 {% block body %}
-<div class="row mb-3">
-    <div class="col-12 text-right">
-        <form method="post" action="{{ path('app_stock_import') }}" style="display:inline-block;" class="mr-2">
-            <button type="submit" class="btn btn-outline-info">
-                <i class="fas fa-file-import"></i> Import from stock.csv
-            </button>
-        </form>
-        <a href="{{ path('app_stock_new') }}" class="btn btn-success">
-            <i class="fas fa-plus"></i> Add New Stock
-        </a>
-    </div>
-</div>
-
 <div class="row">
-    {% for stock in stocks %}
-    <div class="col-md-4 col-sm-6 col-12">
-        <div class="card card-outline {{ stock.quantity > 10 ? 'card-success' : (stock.quantity > 0 ? 'card-warning' : 'card-danger') }}">
+    <div class="col-12">
+        <div class="card card-outline card-primary shadow-sm">
             <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-barcode mr-1"></i>
-                    {{ stock.sku }}
-                </h3>
+                <h3 class="card-title">Stock Inventory Management</h3>
                 <div class="card-tools">
-                    <span class="badge {{ stock.isActive ? 'badge-success' : 'badge-secondary' }}">
-                        {{ stock.isActive ? 'Active' : 'Inactive' }}
-                    </span>
+                    <form method="post" action="{{ path('app_stock_import') }}" style="display:inline-block;" class="mr-2">
+                        <button type="submit" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-file-import"></i> Import stock.csv
+                        </button>
+                    </form>
+                    <a href="{{ path('app_stock_new') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus"></i> Add New Stock
+                    </a>
                 </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <p class="text-muted mb-1">Price</p>
-                        <h4 class="text-primary">{{ stock.price|number_format(2) }} €</h4>
-                    </div>
-                    <div class="col-6">
-                        <p class="text-muted mb-1">Quantity</p>
-                        <h4>{{ stock.quantity }}</h4>
-                    </div>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted mb-0">Final Price (w/ PROMO)</p>
-                        <h5 class="text-success font-weight-bold">{{ stock.finalPrice|number_format(2) }} €</h5>
-                    </div>
-                    {% if stock.promotions|length > 0 %}
-                    <span class="badge badge-pill badge-info" title="{{ stock.promotions|map(p => p.description)|join(', ') }}">
-                        {{ stock.promotions|length }} PROMO
-                    </span>
-                    {% endif %}
-                </div>
+                <table id="stockTable" class="table table-professional responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Status</th>
+                            <th>Price</th>
+                            <th>Final Price</th>
+                            <th>Qty</th>
+                            <th>Reserved</th>
+                            <th>Available</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for stock in stocks %}
+                        <tr>
+                            <td>
+                                <span class="text-bold"><i class="fas fa-barcode mr-2 text-primary"></i>{{ stock.sku }}</span>
+                            </td>
+                            <td>
+                                <span class="badge {{ stock.isActive ? 'bg-success' : 'bg-secondary' }} shadow-sm">
+                                    <i class="fas {{ stock.isActive ? 'fa-check-circle' : 'fa-times-circle' }} mr-1"></i>
+                                    {{ stock.isActive ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>{{ stock.price|number_format(2) }} €</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-success text-bold mr-2">{{ stock.finalPrice|number_format(2) }} €</span>
+                                    {% if stock.promotions|length > 0 %}
+                                        <span class="badge badge-info" title="{{ stock.promotions|length }} active promo">
+                                            <i class="fas fa-percentage"></i>
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>{{ stock.quantity }}</td>
+                            <td>
+                                <span class="text-{{ stock.reserved > stock.quantity ? 'warning' : 'muted' }}" title="{{ stock.reserved > stock.quantity ? 'Reserved qty exceeds total qty' : '' }}">
+                                    <i class="fas fa-lock mr-1"></i> {{ stock.reserved }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {{ stock.available == 0 and stock.quantity > 0 ? 'bg-danger' : 'bg-light border' }}">
+                                    {{ stock.available }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-info btn-xs shadow-sm" title="Edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <form method="post" action="{{ path('app_stock_sync', {'id': stock.id}) }}" style="display:inline-block;">
+                                        <button class="btn btn-warning btn-xs shadow-sm" title="Sync Kafka">
+                                            <i class="fas fa-sync"></i>
+                                        </button>
+                                    </form>
+                                    {{ include('stock/_delete_form.html.twig') }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer">
-                <div class="row text-center mb-3">
-                    <div class="col-6 border-right">
-                        <div class="description-block">
-                            <h5 class="description-header {% if stock.reserved > stock.quantity %}text-warning{% endif %}" title="{{ stock.reserved > stock.quantity ? 'Reserved qty exceeds total qty' : '' }}">
-                                {{ stock.reserved }}
-                            </h5>
-                            <span class="description-text">RESERVED</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="description-block">
-                            <h5 class="description-header {% if stock.available == 0 and stock.quantity > 0 %}text-danger{% endif %}">
-                                {{ stock.available }}
-                            </h5>
-                            <span class="description-text">AVAILABLE</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center pt-2 border-top">
-                    <div class="btn-group">
-                        <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <form method="post" action="{{ path('app_stock_sync', {'id': stock.id}) }}" style="display:inline-block;">
-                            <button class="btn btn-warning btn-sm">
-                                <i class="fas fa-sync"></i> Sync
-                            </button>
-                        </form>
-                        {{ include('stock/_delete_form.html.twig') }}
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- /.card -->
     </div>
-    {% else %}
-    <div class="col-12">
-        <div class="callout callout-info">
-            <h5>No stock items found!</h5>
-            <p>Your database is currently empty. Use the API or Kafka to ingest data.</p>
-        </div>
-    </div>
-    {% endfor %}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function () {
+        $("#stockTable").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "pageLength": 10,
+            "order": [[0, "asc"]],
+            "language": {
+                "search": "Search SKU:",
+                "paginate": {
+                    "previous": "Prev",
+                    "next": "Next"
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

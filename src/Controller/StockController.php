@@ -7,6 +7,7 @@ use App\Form\StockType;
 use App\Repository\StockRepository;
 use App\Service\KafkaProducer;
 use App\Service\CsvImportService;
+use App\Service\NotificationSenderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,18 +28,29 @@ final class StockController extends AbstractController
     }
 
     #[Route('/stock/new', name: 'app_stock_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, KafkaProducer $producer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, KafkaProducer $producer, NotificationSenderService $notifier): Response
     {
         $stock = new Stock();
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($stock);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($stock);
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Erreur : Le SKU "' . $stock->getSku() . '" existe déjà dans le système.');
+                return $this->render('stock/new.html.twig', [
+                    'stock' => $stock,
+                    'form' => $form,
+                ]);
+            }
 
             // Sync to Kafka
             $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+
+            // Envoi d'une notification temps réel !
+            $notifier->sendNotification("Nouveau produit SKU: " . $stock->getSku() . " ajouté au stock.", "STOCK_ADD");
 
             return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
         }
@@ -50,16 +62,30 @@ final class StockController extends AbstractController
     }
 
     #[Route('/stock/{id}/edit', name: 'app_stock_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager, KafkaProducer $producer): Response
+    public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager, KafkaProducer $producer, NotificationSenderService $notifier): Response
     {
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Get original quantity to check for 'Back in stock'
+            $originalQuantity = $entityManager->getUnitOfWork()->getOriginalEntityData($stock)['quantity'] ?? 0;
+            
             $entityManager->flush();
 
             // Sync to Kafka
             $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
+
+            // Envoi de l'alerte temps réel 
+            if ($originalQuantity === 0 && $stock->getQuantity() > 0) {
+                $notifier->sendNotification("L'article " . $stock->getSku() . " est de nouveau en stock, profitez-en vite !", "BACK_IN_STORE");
+            } elseif ($stock->getQuantity() < 10 && $stock->getQuantity() > 0) {
+                $notifier->sendNotification("⚠️ STOCK FAIBLE : seulement " . $stock->getQuantity() . " unités pour " . $stock->getSku(), "STOCK_LOW");
+            } elseif ($stock->getQuantity() == 0) {
+                $notifier->sendNotification("🛑 RUPTURE DE STOCK pour " . $stock->getSku() . " !", "STOCK_OUT");
+            } else {
+                $notifier->sendNotification("Mise à jour du stock : " . $stock->getSku() . " a maintenant " . $stock->getQuantity() . " unités.", "STOCK_INFO");
+            }
 
             return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
         }
@@ -71,11 +97,14 @@ final class StockController extends AbstractController
     }
 
     #[Route('/stock/{id}/delete', name: 'app_stock_delete', methods: ['POST'])]
-    public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager, NotificationSenderService $notifier): Response
     {
         if ($this->isCsrfTokenValid('delete'.$stock->getId(), $request->getPayload()->getString('_token'))) {
+            $sku = $stock->getSku();
             $entityManager->remove($stock);
             $entityManager->flush();
+            
+            $notifier->sendNotification("Le produit sku: " . $sku . " a été supprimé de l'inventaire !", "STOCK_ALERT");
         }
 
         return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);

@@ -6,53 +6,74 @@
 {% block body %}
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card card-outline card-primary">
             <div class="card-header">
                 <h3 class="card-title">Manage your promotions</h3>
                 <div class="card-tools">
                     <form method="post" action="{{ path('app_promotion_import') }}" style="display:inline-block;" class="mr-2">
-                        <button type="submit" class="btn btn-outline-info btn-sm">
+                        <button type="submit" class="btn btn-outline-info">
                             <i class="fas fa-file-import"></i> Import promo.csv
                         </button>
                     </form>
-                    <a href="{{ path('app_promotion_new') }}" class="btn btn-success btn-sm">
-                        <i class="fas fa-plus"></i> Create New
+                    <a href="{{ path('app_promotion_new') }}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Create New Promotion
                     </a>
                 </div>
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+            <div class="card-body">
+                <table id="promotionTable" class="table table-professional responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Description</th>
                             <th>Type</th>
                             <th>Value</th>
+                            <th>Stocks</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for promotion in promotions %}
                         <tr>
-                            <td>{{ promotion.id }}</td>
-                            <td>{{ promotion.description }}</td>
                             <td>
-                                <span class="badge {{ promotion.type == 'percentage' ? 'badge-info' : 'badge-primary' }}">
+                                <span class="text-muted"><i class="fas fa-hashtag mr-1"></i>{{ promotion.id }}</span>
+                            </td>
+                            <td>
+                                <div class="cell-with-icon">
+                                    <i class="fas fa-bullhorn"></i>
+                                    <span>{{ promotion.description }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge {{ promotion.type == 'percentage' ? 'bg-info' : 'bg-primary' }}">
+                                    <i class="fas {{ promotion.type == 'percentage' ? 'fa-percentage' : 'fa-hand-holding-usd' }} mr-1"></i>
                                     {{ promotion.type|capitalize }}
                                 </span>
                             </td>
-                            <td>{{ promotion.value }} {{ promotion.type == 'percentage' ? '%' : '€' }}</td>
-                            <td>
-                                <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="btn btn-info btn-xs">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                {{ include('promotion/_delete_form.html.twig') }}
+                            <td class="text-bold text-lg">
+                                {{ promotion.value }} {{ promotion.type == 'percentage' ? '%' : '€' }}
                             </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">No promotions found</td>
+                            <td>
+                                <div class="cell-with-icon">
+                                    <i class="fas fa-boxes"></i>
+                                    <span class="badge badge-light border">{{ promotion.stocks|length }} items</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-success shadow-sm">
+                                    <i class="fas fa-check-circle mr-1"></i> Active
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="btn btn-info btn-xs shadow-sm" title="Edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    {{ include('promotion/_delete_form.html.twig') }}
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -63,4 +84,25 @@
         <!-- /.card -->
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function () {
+        $("#promotionTable").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "pageLength": 10,
+            "order": [[0, "desc"]],
+            "language": {
+                "search": "Filter:",
+                "paginate": {
+                    "previous": "Prev",
+                    "next": "Next"
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

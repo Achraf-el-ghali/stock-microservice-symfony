@@ -1,0 +1,57 @@
+.table-professional {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-professional thead th {
+    background-color: #3498db !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: none;
+    border: none;
+    padding: 12px 15px;
+}
+
+.table-professional thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table-professional thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table-professional tbody td {
+    vertical-align: middle !important;
+    padding: 15px;
+    border-top: 1px solid #f2f2f2;
+    color: #444;
+}
+
+.table-professional tbody tr:hover {
+    background-color: #f8fbfe;
+}
+
+.table-professional .badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.table-professional .btn-xs {
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Custom alignment for icons and text */
+.cell-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.cell-with-icon i {
+    margin-right: 10px;
+    color: #3498db;
+    width: 20px;
+    text-align: center;
+}

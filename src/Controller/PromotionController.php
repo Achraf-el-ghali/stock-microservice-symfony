@@ -25,7 +25,7 @@ class PromotionController extends AbstractController
     }
 
     #[Route('/new', name: 'app_promotion_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, KafkaProducer $producer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, KafkaProducer $producer, \App\Service\NotificationSenderService $notifier): Response
     {
         $promotion = new Promotion();
         $form = $this->createForm(PromotionType::class, $promotion);
@@ -39,6 +39,12 @@ class PromotionController extends AbstractController
             foreach ($promotion->getStocks() as $stock) {
                 $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
             }
+
+            // Send notification to clients
+            $notifier->sendNotification(
+                sprintf("🔥 Promotion Flash ! -%d%% sur les articles liés jusqu'à ce weekend ! 🚀", $promotion->getDiscountPercentage()),
+                "NEW_PROMOTION"
+            );
 
             return $this->redirectToRoute('app_promotion_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -67,7 +73,7 @@ class PromotionController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_promotion_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Promotion $promotion, EntityManagerInterface $entityManager, KafkaProducer $producer): Response
+    public function edit(Request $request, Promotion $promotion, EntityManagerInterface $entityManager, KafkaProducer $producer, \App\Service\NotificationSenderService $notifier): Response
     {
         $form = $this->createForm(PromotionType::class, $promotion);
         $form->handleRequest($request);
@@ -79,6 +85,12 @@ class PromotionController extends AbstractController
             foreach ($promotion->getStocks() as $stock) {
                 $producer->sendProduct($stock->getSku(), $stock->getFinalPrice(), $stock->getQuantity());
             }
+
+            // Send notification to clients about update
+            $notifier->sendNotification(
+                sprintf("✨ Mise à jour Promotion : -%d%% de réduction ! Profitez-en maintenant !", $promotion->getDiscountPercentage()),
+                "DISCOUNT_EVENT"
+            );
 
             return $this->redirectToRoute('app_promotion_index', [], Response::HTTP_SEE_OTHER);
         }

@@ -43,9 +43,9 @@ class StockImportCommand extends Command //herite de commande donc symfony sait 
         $csvFile  = $input->getArgument('arg1');//recuperation de l arg
         //si csv n existe pas
         if (!file_exists($csvFile)) {
-    $io->error("File not found");
-    return Command::FAILURE;
-}
+            $io->error("File not found");
+            return Command::FAILURE;
+        }
 
         if ($csvFile ) {//objet symfonystyle  pour l affichage des messages dans terminal
             $io->note(sprintf('You passed an argument: %s', $csvFile ));

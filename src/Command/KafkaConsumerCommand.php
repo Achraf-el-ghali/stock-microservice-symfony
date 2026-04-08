@@ -13,6 +13,8 @@ use App\Entity\Stock;
 use App\Service\StockManager;
 use Jobcloud\Kafka\Message\KafkaProducerMessage;
 use Jobcloud\Kafka\Producer\KafkaProducerBuilder;
+use App\Entity\ProcessedEvent;
+use App\Repository\ProcessedEventRepository;
 
 #[AsCommand(
     name: 'app:kafka-consumer',
@@ -22,13 +24,15 @@ class KafkaConsumerCommand extends Command
 {
     private EntityManagerInterface $entityManager;
     private StockManager $stockManager;
+    private ProcessedEventRepository $processedEventRepository;
     private $producer;
 
-    public function __construct(EntityManagerInterface $entityManager, StockManager $stockManager)
+    public function __construct(EntityManagerInterface $entityManager, StockManager $stockManager, ProcessedEventRepository $processedEventRepository)
     {
         parent::__construct();
         $this->entityManager = $entityManager;
         $this->stockManager = $stockManager;
+        $this->processedEventRepository = $processedEventRepository;
         
         // pour envoyer msg a kafka
         $this->producer = KafkaProducerBuilder::create()
@@ -107,8 +111,21 @@ class KafkaConsumerCommand extends Command
                 continue;
             }
 
-            $event = $data['event']; 
-            $payload = $data['data'];
+            // 1. Extract and Validate Event ID (Standardized Envelope)
+            if (!isset($data['eventId'])) {
+                $io->error("Message ignoré : 'eventId' manquant dans l'enveloppe.");
+                continue;
+            }
+            $eventId = $data['eventId'];
+
+            // 2. Idempotency Check
+            if ($this->processedEventRepository->isProcessed($eventId, 'stock-service')) {
+                $io->warning("Event déjà traité (Skipped) : [ID: $eventId] [Event: {$data['event']}]");
+                continue;
+            }
+
+            $event = $data['event'] ?? 'unknown'; 
+            $payload = $data['data'] ?? [];
             
             if (!isset($payload['sku'])) {
                 $io->warning("Attention: l'événement reçu '{$event}' n'a pas de champ 'sku' dans sa data.");
@@ -131,9 +148,11 @@ class KafkaConsumerCommand extends Command
                             (int)$payload['quantity'],
                             (float)($payload['purchase_price'] ?? 0),
                             (float)($payload['selling_price'] ?? 0),
-                            $payload['source'] ?? 'stock_added'
+                            $payload['source'] ?? 'stock_added',
+                            null,
+                            $eventId
                         );
-                        $io->success("Stock ajouté pour SKU: {$payload['sku']} (+{$payload['quantity']})");
+                        $io->success("Stock ajouté pour SKU: {$payload['sku']} (+{$payload['quantity']}) [EventID: $eventId]");
                         $this->notifyStockUpdate($payload['sku']);
                         break;
 
@@ -141,9 +160,10 @@ class KafkaConsumerCommand extends Command
                         $this->stockManager->decreaseStock(
                             $payload['sku'],
                             (int)$payload['quantity'],
-                            $payload['source'] ?? 'order_confirmed'
+                            $payload['source'] ?? 'order_confirmed',
+                            $eventId
                         );
-                        $io->success("Stock réduit pour SKU: {$payload['sku']} (-{$payload['quantity']})");
+                        $io->success("Stock réduit pour SKU: {$payload['sku']} (-{$payload['quantity']}) [EventID: $eventId]");
                         $this->notifyStockUpdate($payload['sku']);
                         break;
 
