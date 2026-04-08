@@ -82,15 +82,6 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label == 'success' ? 'success' : (label == 'danger' ? 'danger' : 'info') }} alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
                 {% block body %}{% endblock %}
             </div>
         </section>
@@ -116,6 +107,32 @@
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+
+{# ── Flash messages → Toastr ── #}
+{% set flashMap = {'success': 'success', 'danger': 'error', 'warning': 'warning', 'info': 'info'} %}
+{% set hasFlashes = false %}
+{% for label, messages in app.flashes %}{% set hasFlashes = true %}{% endfor %}
+{% if hasFlashes %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        toastr.options = {
+            closeButton:   true,
+            progressBar:   true,
+            positionClass: "toast-top-right",
+            timeOut:       5000,
+            extendedTimeOut: 1000,
+            newestOnTop:   true
+        };
+        {% for label, messages in app.flashes %}
+            {% set toastType = flashMap[label] ?? 'info' %}
+            {% for message in messages %}
+        toastr["{{ toastType }}"]("{{ message|e('js') }}");
+            {% endfor %}
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const connection = new signalR.HubConnectionBuilder()
