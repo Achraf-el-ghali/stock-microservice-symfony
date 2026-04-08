@@ -119,7 +119,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:8080/notifications") // Adjust to exact Spring Boot SignalR hub URL
+            .withUrl("http://localhost:8081/notificationHub")
             .withAutomaticReconnect()
             .build();
 
@@ -144,6 +144,8 @@
             console.log("Connected to SignalR notification hub");
         }).catch(function(err) {
             console.error("SignalR Connection Error: ", err.toString());
+            toastr.options = { "closeButton": true, "progressBar": true, "positionClass": "toast-bottom-right", "timeOut": "8000" };
+            toastr.warning("Real-time notifications unavailable. Could not connect to the notification hub.", "Connection Error");
         });
     });
 </script>

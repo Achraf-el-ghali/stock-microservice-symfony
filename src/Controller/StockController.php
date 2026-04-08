@@ -5,14 +5,17 @@ namespace App\Controller;
 use App\Entity\Stock;
 use App\Form\StockType;
 use App\Repository\StockRepository;
-use App\Service\KafkaProducer;
 use App\Service\CsvImportService;
+use App\Service\CsvSyncService;
+use App\Service\KafkaProducer;
 use App\Service\NotificationSenderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -109,6 +112,30 @@ final class StockController extends AbstractController
 
         return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/stock/import', name: 'app_stock_import', methods: ['POST'])]
+    public function import(CsvImportService $csvImportService): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/stock.csv';
+        $count = $csvImportService->importStocks($filePath);
+
+        if ($count > 0) {
+            $this->addFlash('success', "$count stock entries imported successfully from stock.csv.");
+        } else {
+            $this->addFlash('danger', 'Import failed: stock.csv not found or contains no valid rows.');
+        }
+
+        return $this->redirectToRoute('app_stock');
+    }
+
+    #[Route('/stock/export', name: 'app_stock_export', methods: ['GET'])]
+    public function export(CsvSyncService $csvSyncService): Response
+    {
+        $exportPath = $this->getParameter('kernel.project_dir') . '/stock_report.csv';
+        $csvSyncService->export($exportPath);
+
+        return $this->file($exportPath, 'stock_report.csv', ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+    }
+
 #[Route('/api/stock/{sku}', methods: ['GET'])]
 public function getStockBySku(
     string $sku, 
