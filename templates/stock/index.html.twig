@@ -1,108 +1,387 @@
 {% extends 'adminlte.html.twig' %}
 
-{% block title %}Stock Management{% endblock %}
+{% block title %}Stock Management — Gearoil{% endblock %}
 {% block page_title %}Stock Management{% endblock %}
 
+{% block stylesheets %}
+<style>
+/* ── KPI Cards ── */
+.kpi-card {
+    border-radius: 12px;
+    border: none;
+    transition: transform .18s ease, box-shadow .18s ease;
+    overflow: hidden;
+    position: relative;
+}
+.kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.13) !important; }
+.kpi-card .kpi-icon {
+    font-size: 2.6rem;
+    opacity: .18;
+    position: absolute;
+    right: 18px;
+    bottom: 10px;
+}
+.kpi-card .kpi-value { font-size: 2rem; font-weight: 700; line-height: 1; }
+.kpi-card .kpi-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; opacity: .85; }
+
+.kpi-purple { background: linear-gradient(135deg, #605ca8 0%, #7c78c5 100%); color: #fff; }
+.kpi-green  { background: linear-gradient(135deg, #28a745 0%, #48c76a 100%); color: #fff; }
+.kpi-orange { background: linear-gradient(135deg, #fd7e14 0%, #ffa040 100%); color: #fff; }
+.kpi-red    { background: linear-gradient(135deg, #dc3545 0%, #ff5a68 100%); color: #fff; }
+
+/* ── Table Card ── */
+.stock-card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(96,92,168,.10);
+}
+.stock-card .card-header {
+    background: linear-gradient(135deg, #605ca8 0%, #7c78c5 100%);
+    border-radius: 14px 14px 0 0;
+    padding: 1rem 1.4rem;
+}
+.stock-card .card-header h3 { color: #fff; font-weight: 600; font-size: 1rem; margin: 0; }
+
+/* ── Header Buttons ── */
+.btn-import  { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; }
+.btn-import:hover  { background: rgba(255,255,255,.28); color: #fff; }
+.btn-export  { background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.3); color: #fff; }
+.btn-export:hover  { background: rgba(255,255,255,.22); color: #fff; }
+.btn-add     { background: #fff; color: #605ca8; font-weight: 600; border: none; }
+.btn-add:hover     { background: #f0eeff; color: #605ca8; }
+
+/* ── Table ── */
+#stockTable thead th {
+    background: #605ca8 !important;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border: none;
+    padding: 13px 14px;
+    white-space: nowrap;
+}
+#stockTable thead th:first-child { border-radius: 0; }
+#stockTable thead th:last-child  { border-radius: 0; }
+#stockTable tbody td {
+    vertical-align: middle;
+    padding: 13px 14px;
+    border-top: 1px solid #f0eeff;
+    font-size: .9rem;
+    color: #3d3a5e;
+}
+#stockTable tbody tr { transition: background .12s; }
+#stockTable tbody tr:hover { background: #f8f7ff; }
+
+/* ── SKU Cell ── */
+.sku-cell { font-weight: 700; font-size: .92rem; color: #605ca8; letter-spacing: .02em; }
+.sku-cell i { color: #a09dd4; }
+
+/* ── Qty Badge + Bar ── */
+.qty-wrap { display: flex; flex-direction: column; gap: 4px; min-width: 80px; }
+.qty-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: .82rem;
+    text-align: center;
+}
+.qty-ok      { background: #e8f8ee; color: #1a7a3a; }
+.qty-low     { background: #fff3e0; color: #c55a00; }
+.qty-out     { background: #fde8ea; color: #b91c2a; }
+.qty-bar { height: 4px; border-radius: 2px; background: #e9ecef; overflow: hidden; }
+.qty-bar-fill { height: 100%; border-radius: 2px; transition: width .4s ease; }
+.qty-bar-fill.ok  { background: #28a745; }
+.qty-bar-fill.low { background: #fd7e14; }
+.qty-bar-fill.out { background: #dc3545; }
+
+/* ── Price Cells ── */
+.price-base  { color: #888; font-size: .88rem; }
+.price-final { font-weight: 700; font-size: .95rem; color: #605ca8; }
+.promo-pill  {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #ede9ff; color: #605ca8;
+    border-radius: 20px; padding: 2px 8px;
+    font-size: .72rem; font-weight: 600;
+}
+
+/* ── Action Buttons ── */
+.action-btn {
+    width: 30px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px; border: none;
+    font-size: .78rem;
+    transition: transform .12s, box-shadow .12s;
+    cursor: pointer;
+}
+.action-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,.18); }
+.btn-edit   { background: #e8f4fd; color: #1a7fc4; }
+.btn-edit:hover { background: #cce5f5; }
+.btn-sync   { background: #fff8e8; color: #c07a00; }
+.btn-sync:hover { background: #ffefc0; }
+.btn-del    { background: #fde8ea; color: #b91c2a; }
+.btn-del:hover  { background: #fcc9cd; }
+
+/* ── DataTable overrides ── */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1.5px solid #d4d0f0;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: .88rem;
+    outline: none;
+    transition: border-color .15s;
+}
+.dataTables_wrapper .dataTables_filter input:focus { border-color: #605ca8; }
+.dataTables_wrapper .dataTables_length select {
+    border: 1.5px solid #d4d0f0;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+.paginate_button.current, .paginate_button.current:hover {
+    background: #605ca8 !important;
+    border-color: #605ca8 !important;
+    color: #fff !important;
+    border-radius: 6px;
+}
+.paginate_button:hover {
+    background: #ede9ff !important;
+    border-color: #ede9ff !important;
+    color: #605ca8 !important;
+    border-radius: 6px;
+}
+</style>
+{% endblock %}
+
 {% block body %}
-<div class="row">
-    <div class="col-12">
-        <div class="card card-outline card-primary shadow-sm">
-            <div class="card-header">
-                <h3 class="card-title">Stock Inventory Management</h3>
-                <div class="card-tools">
-                    <form method="post" action="{{ path('app_stock_import') }}" style="display:inline-block;" class="mr-2">
-                        <button type="submit" class="btn btn-outline-info btn-sm">
-                            <i class="fas fa-file-import"></i> Import stock.csv
-                        </button>
-                    </form>
-                    <a href="{{ path('app_stock_export') }}" class="btn btn-outline-secondary btn-sm mr-2">
-                        <i class="fas fa-file-export"></i> Export CSV
-                    </a>
-                    <a href="{{ path('app_stock_new') }}" class="btn btn-success btn-sm">
-                        <i class="fas fa-plus"></i> Add New Stock
-                    </a>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table id="stockTable" class="table table-professional responsive nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>SKU</th>
-                            <th>Status</th>
-                            <th>Price</th>
-                            <th>Final Price</th>
-                            <th>Qty</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for stock in stocks %}
-                        <tr>
-                            <td>
-                                <span class="text-bold"><i class="fas fa-barcode mr-2 text-primary"></i>{{ stock.sku }}</span>
-                            </td>
-                            <td>
-                                <span class="badge {{ stock.isActive ? 'badge-success' : 'badge-secondary' }} shadow-sm">
-                                    <i class="fas {{ stock.isActive ? 'fa-check-circle' : 'fa-times-circle' }} mr-1"></i>
-                                    {{ stock.isActive ? 'Active' : 'Inactive' }}
-                                </span>
-                            </td>
-                            <td>{{ stock.price|number_format(2) }} €</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="text-success text-bold mr-2">{{ stock.finalPrice|number_format(2) }} €</span>
-                                    {% if stock.promotions|length > 0 %}
-                                        <span class="badge badge-info" title="{{ stock.promotions|length }} active promo">
-                                            <i class="fas fa-percentage"></i>
-                                        </span>
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <td>{{ stock.quantity }}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-info btn-xs shadow-sm" title="Edit">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <form method="post" action="{{ path('app_stock_sync', {'id': stock.id}) }}" style="display:inline-block;">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('sync' ~ stock.id) }}">
-                                        <button class="btn btn-warning btn-xs shadow-sm" title="Sync Kafka">
-                                            <i class="fas fa-sync"></i>
-                                        </button>
-                                    </form>
-                                    {{ include('stock/_delete_form.html.twig') }}
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
+
+{# ── Compute KPIs ── #}
+{% set totalStocks  = stocks|length %}
+{% set activeCount  = 0 %}
+{% set outCount     = 0 %}
+{% set lowCount     = 0 %}
+{% set maxQty       = 1 %}
+{% for s in stocks %}
+    {% if s.isActive %}{% set activeCount = activeCount + 1 %}{% endif %}
+    {% if s.quantity == 0 %}{% set outCount = outCount + 1 %}
+    {% elseif s.quantity < 10 %}{% set lowCount = lowCount + 1 %}{% endif %}
+    {% if s.quantity > maxQty %}{% set maxQty = s.quantity %}{% endif %}
+{% endfor %}
+
+{# ── KPI Row ── #}
+<div class="row mb-4">
+    <div class="col-6 col-md-3 mb-3">
+        <div class="card kpi-card kpi-purple shadow p-3">
+            <div class="kpi-value">{{ totalStocks }}</div>
+            <div class="kpi-label mt-1">Total SKUs</div>
+            <i class="fas fa-boxes kpi-icon"></i>
         </div>
-        <!-- /.card -->
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+        <div class="card kpi-card kpi-green shadow p-3">
+            <div class="kpi-value">{{ activeCount }}</div>
+            <div class="kpi-label mt-1">Active</div>
+            <i class="fas fa-check-circle kpi-icon"></i>
+        </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+        <div class="card kpi-card kpi-orange shadow p-3">
+            <div class="kpi-value">{{ lowCount }}</div>
+            <div class="kpi-label mt-1">Stock Faible</div>
+            <i class="fas fa-exclamation-triangle kpi-icon"></i>
+        </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+        <div class="card kpi-card kpi-red shadow p-3">
+            <div class="kpi-value">{{ outCount }}</div>
+            <div class="kpi-label mt-1">Rupture</div>
+            <i class="fas fa-times-circle kpi-icon"></i>
+        </div>
+    </div>
+</div>
+
+{# ── Main Table Card ── #}
+<div class="card stock-card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <h3 class="card-title">
+            <i class="fas fa-warehouse mr-2" style="opacity:.8;"></i>
+            Inventaire des Stocks
+        </h3>
+        <div class="d-flex flex-wrap gap-1" style="gap:.4rem;">
+            <form method="post" action="{{ path('app_stock_import') }}" style="display:inline-block;">
+                <button type="submit" class="btn btn-import btn-sm">
+                    <i class="fas fa-file-import mr-1"></i> Importer CSV
+                </button>
+            </form>
+            <a href="{{ path('app_stock_export') }}" class="btn btn-export btn-sm">
+                <i class="fas fa-file-export mr-1"></i> Exporter
+            </a>
+            <a href="{{ path('app_stock_new') }}" class="btn btn-add btn-sm">
+                <i class="fas fa-plus mr-1"></i> Nouveau Stock
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive px-3 pt-3">
+        <table id="stockTable" class="table responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-barcode mr-1"></i> SKU</th>
+                    <th><i class="fas fa-toggle-on mr-1"></i> Statut</th>
+                    <th><i class="fas fa-tag mr-1"></i> Prix Base</th>
+                    <th><i class="fas fa-fire mr-1"></i> Prix Final</th>
+                    <th><i class="fas fa-cubes mr-1"></i> Quantité</th>
+                    <th class="text-center"><i class="fas fa-cog mr-1"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for stock in stocks %}
+                {% set qtyClass = stock.quantity == 0 ? 'out' : (stock.quantity < 10 ? 'low' : 'ok') %}
+                {% set qtyPct   = maxQty > 0 ? ((stock.quantity / maxQty) * 100)|round : 0 %}
+                <tr>
+                    {# SKU #}
+                    <td>
+                        <span class="sku-cell">
+                            <i class="fas fa-barcode mr-1"></i>{{ stock.sku }}
+                        </span>
+                    </td>
+
+                    {# Statut #}
+                    <td>
+                        {% if stock.isActive %}
+                            <span class="badge badge-pill badge-success">
+                                <i class="fas fa-circle mr-1" style="font-size:.5rem;vertical-align:middle;"></i>Actif
+                            </span>
+                        {% else %}
+                            <span class="badge badge-pill badge-secondary">
+                                <i class="fas fa-circle mr-1" style="font-size:.5rem;vertical-align:middle;"></i>Inactif
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    {# Prix Base #}
+                    <td>
+                        <span class="price-base">{{ stock.price|number_format(2) }} €</span>
+                    </td>
+
+                    {# Prix Final #}
+                    <td>
+                        <div class="d-flex align-items-center flex-wrap" style="gap:.35rem;">
+                            <span class="price-final">{{ stock.finalPrice|number_format(2) }} €</span>
+                            {% if stock.promotions|length > 0 %}
+                                <span class="promo-pill">
+                                    <i class="fas fa-percentage"></i>
+                                    {{ stock.promotions|length }} promo{{ stock.promotions|length > 1 ? 's' : '' }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </td>
+
+                    {# Quantité + barre #}
+                    <td>
+                        <div class="qty-wrap">
+                            <span class="qty-badge qty-{{ qtyClass }}">
+                                {% if stock.quantity == 0 %}
+                                    <i class="fas fa-times-circle mr-1"></i>Rupture
+                                {% elseif stock.quantity < 10 %}
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>{{ stock.quantity }} unités
+                                {% else %}
+                                    <i class="fas fa-check-circle mr-1"></i>{{ stock.quantity }} unités
+                                {% endif %}
+                            </span>
+                            <div class="qty-bar">
+                                <div class="qty-bar-fill {{ qtyClass }}" style="width:{{ qtyPct }}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                    {# Actions #}
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center" style="gap:.35rem;">
+                            <a href="{{ path('app_stock_edit', {'id': stock.id}) }}"
+                               class="action-btn btn-edit"
+                               data-toggle="tooltip" title="Modifier {{ stock.sku }}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <form method="post" action="{{ path('app_stock_sync', {'id': stock.id}) }}" style="display:contents;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('sync' ~ stock.id) }}">
+                                <button type="submit"
+                                        class="action-btn btn-sync"
+                                        data-toggle="tooltip" title="Synchroniser Kafka">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            </form>
+
+                            {{ include('stock/_delete_form.html.twig') }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div style="color:#b0aad4;">
+                            <i class="fas fa-box-open" style="font-size:2.5rem;"></i>
+                            <p class="mt-3 mb-1 font-weight-bold">Aucun stock trouvé</p>
+                            <small>Commencez par importer un fichier CSV ou ajouter un article.</small>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
 <script>
-    $(function () {
-        $("#stockTable").DataTable({
-            "responsive": true,
-            "lengthChange": true,
-            "autoWidth": false,
-            "pageLength": 10,
-            "order": [[0, "asc"]],
-            "language": {
-                "search": "Search SKU:",
-                "paginate": {
-                    "previous": "Prev",
-                    "next": "Next"
-                }
+$(function () {
+    /* ── Tooltips ── */
+    $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'top' });
+
+    /* ── DataTable ── */
+    var table = $("#stockTable").DataTable({
+        responsive: true,
+        autoWidth:  false,
+        pageLength: 10,
+        order: [[0, "asc"]],
+        columnDefs: [
+            { orderable: false, targets: 5 }   // Actions column non-sortable
+        ],
+        language: {
+            search:           "",
+            searchPlaceholder:"Rechercher un SKU…",
+            lengthMenu:       "Afficher _MENU_ articles",
+            info:             "_START_–_END_ sur _TOTAL_ articles",
+            infoEmpty:        "0 article",
+            infoFiltered:     "(filtré sur _MAX_ au total)",
+            zeroRecords:      "Aucun résultat",
+            paginate: {
+                previous: "<i class='fas fa-chevron-left'></i>",
+                next:     "<i class='fas fa-chevron-right'></i>"
             }
-        });
+        },
+        drawCallback: function () {
+            /* Re-init tooltips after DataTable redraws rows */
+            $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'top' });
+        }
     });
+
+    /* ── Sync button spinner ── */
+    $(document).on('submit', 'form[action*="sync"]', function () {
+        var btn = $(this).find('button[type="submit"]');
+        btn.html('<i class="fas fa-spinner fa-spin"></i>').prop('disabled', true);
+    });
+
+    /* ── Import button spinner ── */
+    $(document).on('submit', 'form[action*="import"]', function () {
+        var btn = $(this).find('button[type="submit"]');
+        btn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Import…').prop('disabled', true);
+    });
+});
 </script>
 {% endblock %}

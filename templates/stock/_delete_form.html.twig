@@ -1,8 +1,8 @@
-<form method="post" action="{{ path('app_stock_delete', {'id': stock.id}) }}" style="display:inline-block;">
+<form method="post" action="{{ path('app_stock_delete', {'id': stock.id}) }}" style="display:contents;">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
     <button type="button"
-            class="btn btn-danger btn-xs shadow-sm"
-            title="Supprimer"
+            class="action-btn btn-del"
+            data-toggle="tooltip" title="Supprimer {{ stock.sku }}"
             onclick="confirmDelete(this, '{{ stock.sku|e('html_attr') }}')">
         <i class="fas fa-trash"></i>
     </button>
