@@ -17,6 +17,22 @@ class StockRepository extends ServiceEntityRepository
     }
 
     /**
+     * Loads all stocks with their promotions in a single query (avoids N+1).
+     * Use this instead of findAll() for the index page.
+     *
+     * @return Stock[]
+     */
+    public function findAllWithPromotions(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.promotions', 'p')
+            ->addSelect('p')
+            ->orderBy('s.sku', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Finds a Stock summary record by SKU and applies a pessimistic write lock.
      */
     public function findOneBySkuWithLock(string $sku): ?Stock

@@ -26,7 +26,7 @@ final class StockController extends AbstractController
     public function index(StockRepository $stockRepository): Response
     {
         return $this->render('stock/index.html.twig', [
-            'stocks' => $stockRepository->findAll(),
+            'stocks' => $stockRepository->findAllWithPromotions(),
         ]);
     }
 
@@ -190,16 +190,12 @@ public function getStockBySku(
         \App\Service\StockManager $stockManager,
         StockRepository $stockRepository
     ): JsonResponse {
-        $content = $request->getContent();
-        error_log("[StockController] addStockLot content: " . $content);
-        $data = json_decode($content, true);
+        $data = json_decode($request->getContent(), true);
 
-        $sku = $data['sku'] ?? null;
-        $quantity = (int)($data['quantity'] ?? 0);
+        $sku           = $data['sku'] ?? null;
+        $quantity      = (int)($data['quantity'] ?? 0);
         $purchasePrice = (float)($data['purchase_price'] ?? 0);
-        $sellingPrice = (float)($data['selling_price'] ?? 0);
-
-        error_log("[StockController] addStockLot: SKU=$sku, QTY=$quantity, PP=$purchasePrice, SP=$sellingPrice");
+        $sellingPrice  = (float)($data['selling_price'] ?? 0);
 
         try {
             $stockManager->addStock(

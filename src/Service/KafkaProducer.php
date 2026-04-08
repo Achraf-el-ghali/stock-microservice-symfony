@@ -47,6 +47,6 @@ class KafkaProducer
             ->withBody($payload);
 
         $this->producer->produce($kafkaMessage);
-        $this->producer->flush(10000);
+        $this->producer->flush(2000); // 2 s max — do not block the HTTP response longer
     }
 }

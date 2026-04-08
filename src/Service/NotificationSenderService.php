@@ -35,6 +35,10 @@ class NotificationSenderService
     public function sendNotification(string $message, string $type): void
     {
         try {
+            // Fire-and-forget: do NOT call ->getContent() or ->getStatusCode()
+            // Symfony HttpClient is lazy — the request is only sent when the
+            // response is consumed. We intentionally never consume it so the
+            // HTTP call runs in the background and never blocks the response.
             $this->client->request('POST', 'http://spring-boot-app:8085/api/notifications/receive', [
                 'json' => [
                     'message'   => $message,
@@ -42,6 +46,8 @@ class NotificationSenderService
                     'origin'    => 'STOCK_SERVICE',
                     'timestamp' => (new \DateTime())->format(\DateTime::ATOM),
                 ],
+                'timeout'         => 2,   // give up after 2 s if Spring Boot is slow
+                'max_duration'    => 2,
             ]);
 
             $this->logger->info('[REST] Notification envoyée au relais Spring Boot', [
@@ -49,7 +55,8 @@ class NotificationSenderService
                 'message' => $message,
             ]);
         } catch (\Exception $e) {
-            $this->logger->error('[REST] Erreur envoi notification : ' . $e->getMessage());
+            // Never let a failed notification block or crash the stock operation
+            $this->logger->warning('[REST] Notification non envoyée (Spring Boot indisponible) : ' . $e->getMessage());
         }
     }
 }
