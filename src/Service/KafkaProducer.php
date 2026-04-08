@@ -8,9 +8,10 @@ class KafkaProducer
 
     public function __construct()
     {
+        $broker = $_ENV['KAFKA_BROKER'] ?? 'kafka-catalogue:9092';
         try {
             $this->producer = \Jobcloud\Kafka\Producer\KafkaProducerBuilder::create()
-                ->withAdditionalBroker('kafka:9092')
+                ->withAdditionalBroker($broker)
                 ->build();
         } catch (\Exception $e) {
             $this->producer = null;
@@ -19,10 +20,14 @@ class KafkaProducer
 
     public function sendProduct($sku, $price, $quantity)
     {
+        if (!$this->producer) {
+            return;
+        }
+
         $message = json_encode([
-            "sku" => $sku,
-            "price" => $price,
-            "quantity" => $quantity
+            'sku'      => $sku,
+            'price'    => $price,
+            'quantity' => $quantity,
         ]);
 
         $kafkaMessage = \Jobcloud\Kafka\Message\KafkaProducerMessage::create('stock.products', 0)
@@ -30,9 +35,5 @@ class KafkaProducer
 
         $this->producer->produce($kafkaMessage);
         $this->producer->flush(10000);
-
-        // Old command (shell exec):
-        // $cmd = "echo '$message' | docker exec -i symfony2026-kafka-1 kafka-console-producer --topic stock.products --bootstrap-server localhost:9092";
-        // exec($cmd);
     }
 }

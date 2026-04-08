@@ -110,7 +110,11 @@ final class StockController extends AbstractController
         return $this->redirectToRoute('app_stock', [], Response::HTTP_SEE_OTHER);
     }
 #[Route('/api/stock/{sku}', methods: ['GET'])]
-public function getStockBySku(string $sku, StockRepository $stockRepository): JsonResponse
+public function getStockBySku(
+    string $sku, 
+    StockRepository $stockRepository,
+    \App\Repository\StockLotRepository $stockLotRepository
+): JsonResponse
 {
     $stock = $stockRepository->findOneBy(['sku' => $sku]);
 
@@ -118,78 +122,65 @@ public function getStockBySku(string $sku, StockRepository $stockRepository): Js
         return $this->json(['error' => 'Product not found'], 404);
     }
 
+    $latestLot = $stockLotRepository->findLatestLotBySku($sku);
+    $price = $latestLot ? $latestLot->getSellingPrice() : 0.0;
+
     return $this->json([
         'sku' => $stock->getSku(),
-        'price' => $stock->getPrice(),
+        'price' => $price,
         'quantity' => $stock->getQuantity(),
-        'promo' => $stock->getPromotions(),
-        'finalPrice' => $stock->getFinalPrice(),
         'isActive' => $stock->getIsActive()
     ]);
 }
 
-#[Route('/api/stock/{sku}/price', methods: ['PATCH'])]
-public function updateStockPrice(
-    string $sku,
-    Request $request,
-    StockRepository $stockRepository,
-    EntityManagerInterface $em
-): JsonResponse {
-    $stock = $stockRepository->findOneBy(['sku' => $sku]);
+    #[Route('/api/stock/add-lot', methods: ['POST'])]
+    public function addStockLot(
+        Request $request,
+        \App\Service\StockManager $stockManager,
+        StockRepository $stockRepository
+    ): JsonResponse {
+        $content = $request->getContent();
+        error_log("[StockController] addStockLot content: " . $content);
+        $data = json_decode($content, true);
 
-    if (!$stock) {
-        return $this->json(['error' => 'Product not found'], 404);
-    }
+        $sku = $data['sku'] ?? null;
+        $quantity = (int)($data['quantity'] ?? 0);
+        $purchasePrice = (float)($data['purchase_price'] ?? 0);
+        $sellingPrice = (float)($data['selling_price'] ?? 0);
 
-    $body = json_decode($request->getContent(), true);
+        error_log("[StockController] addStockLot: SKU=$sku, QTY=$quantity, PP=$purchasePrice, SP=$sellingPrice");
 
-    if (isset($body['price'])) {
-        $stock->setPrice((float) $body['price']);
-    }
-    if (isset($body['quantity'])) {
-        $stock->setQuantity((int) $body['quantity']);
-    }
+        try {
+            $stockManager->addStock(
+                $sku,
+                $quantity,
+                $purchasePrice,
+                $sellingPrice,
+                'manual_entry',
+                'manual_' . date('Ymd_His')
+            );
+            
+            $stock = $stockRepository->findOneBy(['sku' => $sku]);
 
-    $em->flush();
-
-    return $this->json([
-        'sku'        => $stock->getSku(),
-        'price'      => $stock->getPrice(),
-        'quantity'   => $stock->getQuantity(),
-        'finalPrice' => $stock->getFinalPrice(),
-        'isActive'   => $stock->getIsActive(),
-    ]);
-}
-    #[Route('/stock/import', name: 'app_stock_import', methods: ['POST'])]
-    public function import(Request $request, CsvImportService $importService): Response
-    {
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $csvFile = $projectDir . '/stock.csv';
-
-        $count = $importService->importStocks($csvFile);
-
-        if ($count > 0) {
-            $this->addFlash('success', sprintf('Successfully imported %d stocks from stock.csv', $count));
-        } else {
-            $this->addFlash('danger', 'Import failed or file not found.');
+            return $this->json([
+                'message' => 'Stock lot added successfully',
+                'sku' => $sku,
+                'added_quantity' => $quantity,
+                'total_quantity' => $stock ? $stock->getQuantity() : 0,
+                'selling_price' => $sellingPrice
+            ]);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 500);
         }
-
-        return $this->redirectToRoute('app_stock');
     }
 
-    #[Route('/stock/{id}/sync', name: 'app_stock_sync', methods: ['POST'])]
-    public function syncStock(Stock $stock, KafkaProducer $producer): Response
+    #[Route('/send-product', methods: ['GET'])]
+    public function sendProduct(KafkaProducer $producer): JsonResponse
     {
-        $producer->sendProduct(
-            $stock->getSku(),
-            $stock->getFinalPrice(),
-            $stock->getQuantity()
-        );
+        $sku = "OIL-5W30-MAX-1";
+        $producer->sendProduct($sku, 200, 50);
 
-        $this->addFlash('success', sprintf('Stock %s synced to Kafka!', $stock->getSku()));
-
-        return $this->redirectToRoute('app_stock');
+        return $this->json(["message" => "Test product sent to kafka: $sku"]);
     }
-
 }
 

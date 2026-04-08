@@ -39,7 +39,6 @@ class StockManager
                 $this->entityManager->persist($stock);
             }
             $stock->setQuantity($stock->getQuantity() + $quantity);
-            $stock->setPrice($sellingPrice); // Update latest selling price
 
             // 2. Create Stock Lot
             $lot = new StockLot();
@@ -146,7 +145,7 @@ class StockManager
     /**
      * Records an event as processed within the current transaction.
      */
-    private function recordProcessedEvent(string $eventId): void
+    public function recordProcessedEvent(string $eventId): void
     {
         $processedEvent = new ProcessedEvent();
         $processedEvent->setEventId($eventId);

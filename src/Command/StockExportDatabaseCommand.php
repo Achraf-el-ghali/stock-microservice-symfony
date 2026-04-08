@@ -23,12 +23,17 @@ class StockExportDatabaseCommand extends Command // herite de commande donc symf
 {
     private EntityManagerInterface $em;
     private StockRepository $stockRepository;
+    private \App\Repository\StockLotRepository $stockLotRepository;
 
-    public function __construct(EntityManagerInterface $em, StockRepository $stockRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $em, 
+        StockRepository $stockRepository,
+        \App\Repository\StockLotRepository $stockLotRepository
+    ) {
         parent::__construct();
         $this->em = $em;
         $this->stockRepository = $stockRepository;
+        $this->stockLotRepository = $stockLotRepository;
     }
 
     protected function configure(): void  //pour la configue et definir l argument
@@ -68,7 +73,9 @@ class StockExportDatabaseCommand extends Command // herite de commande donc symf
         foreach ($stocks as $stock) {
             $sku = $stock->getSku();
             $quantity = $stock->getQuantity();
-            $price = $stock->getPrice();
+            
+            $latestLot = $this->stockLotRepository->findLatestLotBySku($sku);
+            $price = $latestLot ? $latestLot->getSellingPrice() : 0.0;
 
             // verifie via terminal
             $io->text("EXPORT -> SKU: $sku | Qty: $quantity | Price: $price");
