@@ -1,0 +1,39 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="uc-user" name="UC - User Service">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t" value="Diagramme de cas d'utilisation — User Service &amp; API Gateway" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1000" height="30" as="geometry"/></mxCell>
+        <mxCell id="sys" value=".NET User Service &amp; API Gateway" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="340" y="60" width="700" height="780" as="geometry"/></mxCell>
+
+        <mxCell id="ac1" value="Client" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="140" y="150" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac2" value="Administrateur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="140" y="550" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex1" value="Google OAuth&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1200" y="200" width="40" height="80" as="geometry"/></mxCell>
+
+        <mxCell id="u1" value="S'inscrire" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="100" width="180" height="50" as="geometry"/></mxCell>
+        <mxCell id="u2" value="Se connecter" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="180" width="180" height="50" as="geometry"/></mxCell>
+        <mxCell id="u3" value="Se connecter via&lt;br&gt;Google OAuth" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="750" y="180" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="u4" value="Réinitialiser le&lt;br&gt;mot de passe" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="270" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="u5" value="Gérer son profil" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="370" width="180" height="50" as="geometry"/></mxCell>
+
+        <mxCell id="u6" value="Créer un staff" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="500" width="180" height="50" as="geometry"/></mxCell>
+        <mxCell id="u7" value="Bloquer / Débloquer&lt;br&gt;un compte" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="580" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="u8" value="Modérer les comptes&lt;br&gt;clients" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="440" y="670" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="u9" value="Activer un compte" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="750" y="500" width="180" height="50" as="geometry"/></mxCell>
+
+        <mxCell id="l1" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l2" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l3" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l4" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l5" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l6" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l7" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u8"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="i1" value="«extend»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u3" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="i2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u6" target="u9"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="e1" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
