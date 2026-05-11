@@ -1,0 +1,32 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="d3" name="3. UC - Stock">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t3" value="Diagramme de cas d'utilisation — Microservice Stock" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="100" y="15" width="1000" height="30" as="geometry"/></mxCell>
+        <mxCell id="sys3" value="Microservice Stock (Symfony)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="600" height="680" as="geometry"/></mxCell>
+        <mxCell id="a3_admin" value="Administrateur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="120" y="200" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="a3_sys" value="Microservice&lt;br&gt;Produit" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="120" y="500" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="a3_kafka" value="Kafka&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1060" y="400" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="s1" value="Consulter le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="100" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="s2" value="Mettre à jour le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="190" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="s3" value="Importer stock (CSV)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="280" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="s4" value="Gérer les promotions" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="370" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="s5" value="Consulter l'historique&lt;br&gt;des mouvements" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="460" width="220" height="60" as="geometry"/></mxCell>
+        <mxCell id="s6" value="Récupérer infos stock&lt;br&gt;(par SKU)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="560" width="220" height="60" as="geometry"/></mxCell>
+        <mxCell id="s7" value="Publier événement&lt;br&gt;stock mis à jour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="700" y="190" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="s8" value="Publier promotion" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="700" y="370" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="sl1" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_admin" target="s1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="sl2" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_admin" target="s2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="sl3" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_admin" target="s3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="sl4" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_admin" target="s4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="sl5" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_admin" target="s5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="sl6" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_sys" target="s6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="si1" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s2" target="s7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="si2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s4" target="s8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se1" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_kafka" target="s7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se2" style="endArrow=none;html=1;" edge="1" parent="1" source="a3_kafka" target="s8"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
