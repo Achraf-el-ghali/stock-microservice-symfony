@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="d9" name="9. UC - Paiement et Services">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t9" value="Diagramme de cas d'utilisation — Services et Paiement" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1000" height="30" as="geometry"/></mxCell>
+        <mxCell id="sys9" value="Système : Services et Paiement" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="320" y="60" width="750" height="1080" as="geometry"/></mxCell>
+        <mxCell id="a91" value="Technicien" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="130" y="130" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="a92" value="Client" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="130" y="560" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="a93" value="Livreur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="130" y="980" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex91" value="«Système»&lt;br&gt;Twilio" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="100" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex92" value="«Système»&lt;br&gt;Microservice Panier" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="270" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex93" value="«Système»&lt;br&gt;Livraison Worker" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="400" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex94" value="«Système»&lt;br&gt;Vidange Worker" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="500" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex95" value="«Système»&lt;br&gt;Passerelle Stripe" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="700" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex96" value="«Système»&lt;br&gt;Outbox Worker" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="820" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex97" value="«Système»&lt;br&gt;Microservice Utilisateurs" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;" vertex="1" parent="1"><mxGeometry x="1220" y="1020" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="uc91" value="Recevoir alerte SMS&lt;br&gt;(Proximité)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="100" width="220" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc92" value="Effectuer la Vidange" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="100" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc93" value="Voir Vidanges Assignées" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="190" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc94" value="Terminer la Vidange" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="270" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc95" value="Traiter l'événement Panier" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="350" width="240" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc96" value="Assigner les tâches&lt;br&gt;de Livraison" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="430" width="230" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc97" value="Assigner les tâches&lt;br&gt;de Vidange" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="520" width="230" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc98" value="Suivre la Livraison" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="610" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc99" value="Suivre la Vidange" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="680" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc910" value="Initier le Paiement" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="760" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc911" value="Suivre la Commande" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="830" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc912" value="Envoyer Webhook&lt;br&gt;de Paiement" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="720" y="700" width="230" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc913" value="Publier événements&lt;br&gt;Kafka (Outbox)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="900" width="230" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc914" value="Traiter le Paiement&lt;br&gt;(Validation)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="720" y="830" width="230" height="60" as="geometry"/></mxCell>
+        <mxCell id="uc915" value="Terminer la Livraison" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="990" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc916" value="Gérer la Disponibilité" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="720" y="990" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc917" value="Effectuer la Livraison" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="720" y="610" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="uc918" value="Voir Livraisons Assignées" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="1060" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="la1" style="endArrow=none;html=1;" edge="1" parent="1" source="a91" target="uc91"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la2" style="endArrow=none;html=1;" edge="1" parent="1" source="a91" target="uc93"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la3" style="endArrow=none;html=1;" edge="1" parent="1" source="a91" target="uc94"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la4" style="endArrow=none;html=1;" edge="1" parent="1" source="a92" target="uc98"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la5" style="endArrow=none;html=1;" edge="1" parent="1" source="a92" target="uc99"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la6" style="endArrow=none;html=1;" edge="1" parent="1" source="a92" target="uc910"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la7" style="endArrow=none;html=1;" edge="1" parent="1" source="a92" target="uc911"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la8" style="endArrow=none;html=1;" edge="1" parent="1" source="a93" target="uc915"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="la9" style="endArrow=none;html=1;" edge="1" parent="1" source="a93" target="uc918"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="li1" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="uc91" target="uc92"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="li2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="uc910" target="uc912"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="li3" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="uc913" target="uc914"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="li4" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="uc915" target="uc916"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="li5" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="uc98" target="uc917"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le1" style="endArrow=none;html=1;" edge="1" parent="1" source="ex91" target="uc91"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le2" style="endArrow=none;html=1;" edge="1" parent="1" source="ex92" target="uc95"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le3" style="endArrow=none;html=1;" edge="1" parent="1" source="ex93" target="uc96"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le4" style="endArrow=none;html=1;" edge="1" parent="1" source="ex94" target="uc97"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le5" style="endArrow=none;html=1;" edge="1" parent="1" source="ex95" target="uc912"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le6" style="endArrow=none;html=1;" edge="1" parent="1" source="ex96" target="uc914"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="le7" style="endArrow=none;html=1;" edge="1" parent="1" source="ex97" target="uc916"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

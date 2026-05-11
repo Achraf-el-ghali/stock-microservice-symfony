@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-stock" name="Modélisation - Stock_Service">
+    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Modélisation du Microservice : Gestion du Stock (Stock_Service)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1200" height="30" as="geometry"/></mxCell>
+        <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1320" height="900" as="geometry"/></mxCell>
+
+        <mxCell id="stk" value="Stock (Produit en stock)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="300" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="stk_a" value="-sku : string {identifiant unique du produit}&#xa;-quantity : int {quantité disponible}&#xa;-price : float {prix de vente}&#xa;-isActive : bool {produit actif ou non}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="stk">
+          <mxGeometry y="26" width="300" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="stk_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#6C8EBF;" vertex="1" parent="stk">
+          <mxGeometry y="106" width="300" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="stk_m" value="+getFinalPrice() : float&#xa;   → calcule le prix après promotions&#xa;+isInStock() : bool&#xa;   → vérifie si le produit est disponible&#xa;+getStockStatus() : string&#xa;   → retourne 'available' ou 'out_of_stock'" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="stk">
+          <mxGeometry y="114" width="300" height="116" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="lot" value="StockLot (Lot d'approvisionnement)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="300" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="lot_a" value="-sku : string&#xa;-quantityInitial : int {quantité reçue}&#xa;-quantityRemaining : int {quantité restante}&#xa;-purchasePrice : float {prix d'achat}&#xa;-sellingPrice : float {prix de vente}&#xa;-dateEntry : DateTime {date de réception}&#xa;-importReference : string {réf. import CSV}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="lot">
+          <mxGeometry y="26" width="300" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="lot_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#000000;" vertex="1" parent="lot">
+          <mxGeometry y="156" width="300" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="lot_m" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="lot">
+          <mxGeometry y="164" width="300" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="promo" value="Promotion" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="920" y="100" width="280" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="promo_a" value="-description : string {ex: Solde été}&#xa;-type : string {percentage ou fixed}&#xa;-value : float {montant de la réduction}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="promo">
+          <mxGeometry y="26" width="280" height="124" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="mvt" value="StockMovement (Historique des mouvements)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="420" width="320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="mvt_a" value="-sku : string {produit concerné}&#xa;-type : string {IN = entrée, OUT = sortie}&#xa;-quantity : int {quantité déplacée}&#xa;-source : string {ex: vente, retour, import}&#xa;-createdAt : DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="mvt">
+          <mxGeometry y="26" width="320" height="174" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="svc" value="Gestion du Stock" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="420" width="320" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc_a" value="+updateStock(sku, qty, source)&#xa;   → met à jour la quantité en stock&#xa;+handleSale(sku, qty)&#xa;   → décrémente le stock lors d'une vente&#xa;+handleReturn(sku, qty)&#xa;   → incrémente le stock lors d'un retour" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="svc">
+          <mxGeometry y="26" width="320" height="134" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="kafka" value="Messagerie inter-services" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="920" y="420" width="300" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="kafka_a" value="+publishStockUpdate(sku, qty)&#xa;   → notifie les autres services&#xa;+publishPromotion(promo)&#xa;   → publie une nouvelle promotion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="kafka">
+          <mxGeometry y="26" width="300" height="94" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bdd" value="Base de Données (MySQL)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="700" width="320" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="bdd_a" value="+ Stockage des produits et lots&#xa;+ Historique des mouvements&#xa;+ Gestion des promotions" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
+          <mxGeometry y="26" width="320" height="74" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="r1" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="stk" target="lot"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="455" y="170" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="365" y="170" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1v" value="&lt;font color='#FF0000'&gt;contient &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="385" y="150" width="80" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="stk" target="promo"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r2a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="785" y="155" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2b" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="895" y="155" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2v" value="&lt;font color='#FF0000'&gt;&lt; bénéficie de&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="810" y="135" width="100" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r3" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="stk" target="mvt"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="480" y="320" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3b" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="385" y="420" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3v" value="&lt;font color='#FF0000'&gt;enregistre &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="390" y="360" width="90" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r4" value="&lt;font color='#CC6600'&gt;gère &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="stk"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r5" value="&lt;font color='#CC6600'&gt;publie via &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="kafka"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="r6" style="endArrow=diamondThin;endFill=0;endSize=14;html=1;strokeColor=#000000;" edge="1" parent="1" source="stk" target="bdd"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r6v" value="&lt;font color='#FF0000'&gt;sauvegarde&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="590" y="630" width="80" height="20" as="geometry"/></mxCell>
+        <mxCell id="r6a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="645" y="600" width="35" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="note1" value="&lt;font color='#008800'&gt;&lt;i&gt;Un Stock peut avoir plusieurs lots&lt;br&gt;d'approvisionnement (FIFO)&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="60" y="310" width="200" height="40" as="geometry"/></mxCell>
+        <mxCell id="note2" value="&lt;font color='#008800'&gt;&lt;i&gt;Relation ManyToMany :&lt;br&gt;un stock peut avoir plusieurs promotions&lt;br&gt;et une promotion peut s'appliquer à plusieurs stocks&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="900" y="260" width="280" height="50" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

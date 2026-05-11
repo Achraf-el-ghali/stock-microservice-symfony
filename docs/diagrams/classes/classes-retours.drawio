@@ -1,0 +1,72 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-retours" name="Modélisation - Retours_Service">
+    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Modélisation du Microservice : Gestion des Retours (Retours_Service)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1200" height="30" as="geometry"/></mxCell>
+        <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1320" height="800" as="geometry"/></mxCell>
+
+        <mxCell id="ret" value="Retour Produit (ProductReturn)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="320" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="ret_a" value="-orderReference : string {n° de commande}&#xa;-sku : string {produit retourné}&#xa;-quantity : int {quantité retournée}&#xa;-status : ReturnStatus {état du retour}&#xa;-condition : ReturnCondition {état du produit}&#xa;-reason : string {motif du retour}&#xa;-imageData : text {photo du produit}&#xa;-createdAt : DateTimeImmutable&#xa;-updatedAt : DateTimeImmutable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="ret">
+          <mxGeometry y="26" width="320" height="234" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="cache" value="Commande en Cache (OrderCache)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="100" width="340" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="cache_a" value="-id : string {= numéro de commande}&#xa;-products : array {liste des produits}&#xa;-source : string {'kafka' ou 'gearoil'}&#xa;-isPaid : bool {commande payée ?}&#xa;-isDelivered : bool {commande livrée ?}&#xa;-totalAmount : float {montant total}&#xa;-customerEmail : string&#xa;-receivedAt : DateTimeImmutable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="cache">
+          <mxGeometry y="26" width="340" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="cache_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#82B366;" vertex="1" parent="cache">
+          <mxGeometry y="176" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="cache_m" value="+getQuantityForSku(sku) : int&#xa;   → retourne la quantité commandée&#xa;     pour un produit donné" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="cache">
+          <mxGeometry y="184" width="340" height="76" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="st_enum" value="«enumeration»&#xa;ReturnStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="500" width="250" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="st_v" value="PENDING → En attente de traitement&#xa;APPROVED → Retour accepté&#xa;REJECTED → Retour refusé&#xa;REFUNDED → Client remboursé" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="st_enum">
+          <mxGeometry y="40" width="250" height="120" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="co_enum" value="«enumeration»&#xa;ReturnCondition" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="500" width="250" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="co_v" value="NEW → Produit neuf&#xa;USED → Produit utilisé&#xa;DAMAGED → Produit endommagé" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="co_enum">
+          <mxGeometry y="40" width="250" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bdd" value="Base de Données" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="780" y="500" width="300" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="bdd_a" value="MySQL → Retours (ProductReturn)&#xa;MongoDB → Cache des commandes (OrderCache)&#xa;&#xa;Double persistance pour la performance" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
+          <mxGeometry y="26" width="300" height="94" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="kafka_note" value="Messagerie (événements reçus)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="100" width="280" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="kn_a" value="Consomme les événements :&#xa;- Paiement confirmé → marque payée&#xa;- Livraison confirmée → marque livrée" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="kafka_note">
+          <mxGeometry y="26" width="280" height="74" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="r1" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="ret" target="cache"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="425" y="210" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="535" y="210" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1v" value="&lt;font color='#FF0000'&gt;concerne &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="445" y="190" width="90" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#000000;" edge="1" parent="1" source="ret" target="st_enum"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#000000;" edge="1" parent="1" source="ret" target="co_enum"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="r4" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;" edge="1" parent="1" source="kafka_note" target="cache"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r4v" value="&lt;font color='#CC6600'&gt;&lt; met à jour&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="935" y="230" width="80" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="note1" value="&lt;font color='#008800'&gt;&lt;i&gt;Un retour est toujours lié à une commande.&lt;br&gt;La commande est mise en cache localement&lt;br&gt;pour éviter les appels réseau répétés.&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="560" y="380" width="280" height="50" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
