@@ -1,65 +1,65 @@
 <mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
-  <diagram id="cls-paiement" name="Classes - Paiement et Services">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram id="cls-paiement" name="Modélisation - Paiement_Service">
+    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0"/><mxCell id="1" parent="0"/>
-        <mxCell id="t" value="Diagramme de classes — Microservice Paiement &amp; Services" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="150" y="10" width="900" height="30" as="geometry"/></mxCell>
+        <mxCell id="title" value="Modélisation du Microservice : Gestion des Paiements (Payment_Service)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1200" height="30" as="geometry"/></mxCell>
+        <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1320" height="800" as="geometry"/></mxCell>
 
-        <mxCell id="pay" value="Payment" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="400" y="60" width="300" height="270" as="geometry"/>
+        <mxCell id="gate" value="Passerelle (Stripe / PayPal)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="80" width="320" height="130" as="geometry"/>
         </mxCell>
-        <mxCell id="pay_a" value="-ID_Commande : string&#xa;-Montant : decimal&#xa;-Devise : string (MAD)&#xa;-Statut : PaymentStatus&#xa;-DatePaiement : DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
-          <mxGeometry y="26" width="300" height="90" as="geometry"/>
+        <mxCell id="gate_a" value="+CreerSessionDePaiement()&#xa;   → crée une session de paiement sécurisée&#xa;+ValiderTransaction()&#xa;   → vérifie que le paiement est bien reçu&#xa;-CleApi : Secret" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="gate">
+          <mxGeometry y="26" width="320" height="104" as="geometry"/>
         </mxCell>
-        <mxCell id="pay_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#000000;" vertex="1" parent="pay">
-          <mxGeometry y="116" width="300" height="8" as="geometry"/>
+
+        <mxCell id="svc" value="Service de Paiement" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="280" width="280" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc_a" value="+InitierPaiement()&#xa;   → démarre le processus de paiement&#xa;+ConfirmerPaiement()&#xa;   → confirme après validation Stripe&#xa;+RembourserPaiement()&#xa;   → lance un remboursement&#xa;+VerifierStatut()&#xa;   → consulte l'état du paiement" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="svc">
+          <mxGeometry y="26" width="280" height="144" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="pay" value="Paiement (Payment)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="280" width="320" height="190" as="geometry"/>
+        </mxCell>
+        <mxCell id="pay_a" value="-ID_Commande : string&#xa;-Montant : decimal&#xa;-Devise : string (MAD)&#xa;-Statut : Enum (Réussi, Échoué, En cours)&#xa;-DatePaiement : DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
+          <mxGeometry y="26" width="320" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="pay_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#6C8EBF;" vertex="1" parent="pay">
+          <mxGeometry y="116" width="320" height="8" as="geometry"/>
         </mxCell>
         <mxCell id="pay_m" value="+initier() : void&#xa;+confirmer() : void&#xa;+rembourser() : void&#xa;+verifierStatut() : PaymentStatus" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
-          <mxGeometry y="124" width="300" height="146" as="geometry"/>
+          <mxGeometry y="124" width="320" height="66" as="geometry"/>
         </mxCell>
 
-        <mxCell id="trans" value="Transaction" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="860" y="100" width="260" height="120" as="geometry"/>
+        <mxCell id="trans" value="Transaction" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="940" y="300" width="300" height="130" as="geometry"/>
         </mxCell>
-        <mxCell id="trans_a" value="-ReferenceExterne : string&#xa;-ModePaiement : string&#xa;-ReponsePasserelle : string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="trans">
-          <mxGeometry y="26" width="260" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="trans_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#000000;" vertex="1" parent="trans">
-          <mxGeometry y="86" width="260" height="8" as="geometry"/>
-        </mxCell>
-        <mxCell id="trans_m" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="trans">
-          <mxGeometry y="94" width="260" height="26" as="geometry"/>
+        <mxCell id="trans_a" value="-ReferenceExterne : string {ID Stripe}&#xa;-ModePaiement : string {carte, virement}&#xa;-ReponsePasserelle : string {succès/échec}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="trans">
+          <mxGeometry y="26" width="300" height="104" as="geometry"/>
         </mxCell>
 
-        <mxCell id="gate" value="Passerelle (Stripe/PayPal)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="60" y="100" width="280" height="140" as="geometry"/>
+        <mxCell id="bdd" value="Base de Données Paiement" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="600" width="320" height="110" as="geometry"/>
         </mxCell>
-        <mxCell id="gate_a" value="-CleApi : Secret" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="gate">
-          <mxGeometry y="26" width="280" height="26" as="geometry"/>
-        </mxCell>
-        <mxCell id="gate_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#000000;" vertex="1" parent="gate">
-          <mxGeometry y="52" width="280" height="8" as="geometry"/>
-        </mxCell>
-        <mxCell id="gate_m" value="+CreerSessionDePaiement() : Session&#xa;+ValiderTransaction() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="gate">
-          <mxGeometry y="60" width="280" height="80" as="geometry"/>
+        <mxCell id="bdd_a" value="+ Historique des Paiements&#xa;+ Logs des Transactions&#xa;+ Traçabilité complète des opérations" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
+          <mxGeometry y="26" width="320" height="84" as="geometry"/>
         </mxCell>
 
-        <mxCell id="statut" value="«enumeration»&#xa;PaymentStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="460" y="440" width="200" height="120" as="geometry"/>
-        </mxCell>
-        <mxCell id="stat_v" value="Réussi&#xa;Échoué&#xa;En cours" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="statut">
-          <mxGeometry y="40" width="200" height="80" as="geometry"/>
-        </mxCell>
+        <mxCell id="r1" value="&lt;font color='#CC6600'&gt;utilise &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="gate"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r2" value="&lt;font color='#CC6600'&gt;gère &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="pay"><mxGeometry relative="1" as="geometry"/></mxCell>
 
-        <mxCell id="r1" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="trans"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="r1a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="705" y="145" width="20" height="20" as="geometry"/></mxCell>
-        <mxCell id="r1b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="835" y="145" width="20" height="20" as="geometry"/></mxCell>
-        <mxCell id="r1v" value="&lt;font color='#FF0000'&gt;a &amp;gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="760" y="125" width="30" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="trans"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="805" y="355" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="920" y="355" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3v" value="&lt;font color='#FF0000'&gt;a &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="855" y="335" width="30" height="20" as="geometry"/></mxCell>
 
-        <mxCell id="r2" style="endArrow=none;html=1;dashed=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="gate"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="r2v" value="&lt;font color='#FF0000'&gt;&amp;lt; utilise&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="310" y="145" width="70" height="20" as="geometry"/></mxCell>
+        <mxCell id="r4" style="endArrow=diamondThin;endFill=0;endSize=14;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="bdd"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r4v" value="&lt;font color='#FF0000'&gt;sauvegarde&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="570" y="530" width="80" height="20" as="geometry"/></mxCell>
+        <mxCell id="r4a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="635" y="480" width="35" height="20" as="geometry"/></mxCell>
 
-        <mxCell id="r3" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="statut"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="note1" value="&lt;font color='#008800'&gt;&lt;i&gt;Chaque paiement génère exactement&lt;br&gt;une transaction avec la passerelle.&lt;br&gt;La référence externe permet de tracer&lt;br&gt;le paiement chez Stripe/PayPal.&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="940" y="450" width="260" height="70" as="geometry"/></mxCell>
       </root>
     </mxGraphModel>
   </diagram>
