@@ -6,14 +6,14 @@
         <mxCell id="title" value="Modélisation du Microservice : Gestion des Paiements (Payment_Service)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1200" height="30" as="geometry"/></mxCell>
         <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1320" height="800" as="geometry"/></mxCell>
 
-        <mxCell id="gate" value="Passerelle (Stripe / PayPal)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="gate" value="Passerelle de Paiement (Stripe / PayPal)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="440" y="80" width="320" height="130" as="geometry"/>
         </mxCell>
         <mxCell id="gate_a" value="+CreerSessionDePaiement()&#xa;   → crée une session de paiement sécurisée&#xa;+ValiderTransaction()&#xa;   → vérifie que le paiement est bien reçu&#xa;-CleApi : Secret" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="gate">
           <mxGeometry y="26" width="320" height="104" as="geometry"/>
         </mxCell>
 
-        <mxCell id="svc" value="Service de Paiement" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="svc" value="Gestion des Paiements" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="80" y="280" width="280" height="170" as="geometry"/>
         </mxCell>
         <mxCell id="svc_a" value="+InitierPaiement()&#xa;   → démarre le processus de paiement&#xa;+ConfirmerPaiement()&#xa;   → confirme après validation Stripe&#xa;+RembourserPaiement()&#xa;   → lance un remboursement&#xa;+VerifierStatut()&#xa;   → consulte l'état du paiement" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="svc">

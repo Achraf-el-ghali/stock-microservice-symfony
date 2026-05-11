@@ -47,7 +47,7 @@
           <mxGeometry y="26" width="300" height="94" as="geometry"/>
         </mxCell>
 
-        <mxCell id="kafka_note" value="Kafka (Système externe)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="kafka_note" value="Messagerie (événements reçus)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1020" y="100" width="280" height="100" as="geometry"/>
         </mxCell>
         <mxCell id="kn_a" value="Consomme les événements :&#xa;- Paiement confirmé → marque payée&#xa;- Livraison confirmée → marque livrée" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="kafka_note">

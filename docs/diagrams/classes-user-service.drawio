@@ -26,7 +26,7 @@
           <mxGeometry y="174" width="320" height="26" as="geometry"/>
         </mxCell>
 
-        <mxCell id="auth" value="Service d'Authentification" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="auth" value="Gestion de la Connexion" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="80" y="320" width="280" height="150" as="geometry"/>
         </mxCell>
         <mxCell id="auth_a" value="+InscriptionUtilisateur()&#xa;+ConnexionSécurisée()&#xa;+MotDePasseOublié()&#xa;+ValidationCompte()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="auth">
@@ -40,7 +40,7 @@
           <mxGeometry y="26" width="280" height="104" as="geometry"/>
         </mxCell>
 
-        <mxCell id="notif" value="Service de Notification" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="notif" value="Envoi des Emails" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="80" y="600" width="280" height="110" as="geometry"/>
         </mxCell>
         <mxCell id="notif_a" value="+EnvoyerEmailConfirmation()&#xa;+EnvoyerAlerteConnexion()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="notif">

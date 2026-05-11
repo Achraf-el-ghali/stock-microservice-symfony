@@ -46,14 +46,14 @@
           <mxGeometry y="26" width="320" height="174" as="geometry"/>
         </mxCell>
 
-        <mxCell id="svc" value="StockManager (Service métier)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="svc" value="Gestion du Stock" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="500" y="420" width="320" height="160" as="geometry"/>
         </mxCell>
         <mxCell id="svc_a" value="+updateStock(sku, qty, source)&#xa;   → met à jour la quantité en stock&#xa;+handleSale(sku, qty)&#xa;   → décrémente le stock lors d'une vente&#xa;+handleReturn(sku, qty)&#xa;   → incrémente le stock lors d'un retour" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="svc">
           <mxGeometry y="26" width="320" height="134" as="geometry"/>
         </mxCell>
 
-        <mxCell id="kafka" value="KafkaProducer (Messagerie)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="kafka" value="Messagerie inter-services" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="920" y="420" width="300" height="120" as="geometry"/>
         </mxCell>
         <mxCell id="kafka_a" value="+publishStockUpdate(sku, qty)&#xa;   → notifie les autres services&#xa;+publishPromotion(promo)&#xa;   → publie une nouvelle promotion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="kafka">
