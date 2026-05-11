@@ -7,8 +7,11 @@
         <mxCell id="sys" value="Système Paiement, Livraison &amp; Vidange" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="840" height="980" as="geometry"/></mxCell>
 
         <mxCell id="ac1" value="Client" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="200" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ac2" value="Livreur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="620" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ac3" value="Technicien" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="880" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac_abstract" value="&lt;i&gt;Agent de terrain&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="110" y="745" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac2" value="Livreur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="570" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac3" value="Technicien" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="920" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="g_liv" style="endArrow=block;endFill=0;endSize=14;html=1;" edge="1" parent="1" source="ac2" target="ac_abstract"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g_tech" style="endArrow=block;endFill=0;endSize=14;html=1;" edge="1" parent="1" source="ac3" target="ac_abstract"><mxGeometry relative="1" as="geometry"/></mxCell>
 
         <mxCell id="ex1" value="Passerelle de paiement&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1310" y="200" width="40" height="80" as="geometry"/></mxCell>
         <mxCell id="ex2" value="Messagerie&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1310" y="430" width="40" height="80" as="geometry"/></mxCell>
