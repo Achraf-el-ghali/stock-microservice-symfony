@@ -1,68 +1,54 @@
 <mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
   <diagram id="uc-retours" name="UC - Retours Service">
-    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0"/><mxCell id="1" parent="0"/>
-        <mxCell id="t" value="Diagramme de cas d'utilisation — Microservice Retours (Symfony)" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1200" height="30" as="geometry"/></mxCell>
-        <mxCell id="sys" value="Système de Gestion des Retours (MySQL + MongoDB)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="1000" height="1100" as="geometry"/></mxCell>
+        <mxCell id="t" value="Diagramme de cas d'utilisation — Microservice Retours" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1000" height="30" as="geometry"/></mxCell>
+        <mxCell id="sys" value="Système de Gestion des Retours" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="740" height="800" as="geometry"/></mxCell>
 
         <mxCell id="ac1" value="Client" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="110" y="180" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ac2" value="Gestionnaire&lt;br&gt;de retours" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="110" y="680" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ex1" value="Kafka&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1460" y="800" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ex2" value="Gearoil Backend&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1460" y="300" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac2" value="Gestionnaire de retours" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="110" y="600" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex1" value="Messagerie&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1200" y="550" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex2" value="Backend principal&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1200" y="150" width="40" height="80" as="geometry"/></mxCell>
 
-        <!-- UC Client -->
         <mxCell id="u1" value="Créer un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="100" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u2" value="Vérifier paiement&lt;br&gt;de la commande" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="90" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u3" value="Vérifier livraison&lt;br&gt;de la commande" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="180" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u4" value="Uploader photo&lt;br&gt;du produit retourné" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="270" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u5" value="Créer des retours&lt;br&gt;en lot (batch)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="190" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u6" value="Consulter ses retours" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="290" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u7" value="Voir détail d'un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="370" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u8" value="Consulter les commandes&lt;br&gt;(cache local)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="460" width="240" height="60" as="geometry"/></mxCell>
-        <mxCell id="u9" value="Vérifier statut paiement&lt;br&gt;d'une commande" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="380" y="560" width="240" height="60" as="geometry"/></mxCell>
+        <mxCell id="u2" value="Vérifier le paiement" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="80" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u3" value="Vérifier la livraison" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="160" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u4" value="Joindre une photo" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="240" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u5" value="Créer des retours en lot" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="180" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="u6" value="Consulter ses retours" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="260" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u7" value="Consulter le détail" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="340" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u8" value="Consulter les commandes" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="420" width="220" height="50" as="geometry"/></mxCell>
+        <mxCell id="u9" value="Vérifier le statut" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="500" width="200" height="50" as="geometry"/></mxCell>
 
-        <!-- UC Gestionnaire -->
-        <mxCell id="u10" value="Approuver un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="680" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u11" value="Rejeter un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="760" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u12" value="Rembourser un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="840" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u13" value="Consulter le dashboard&lt;br&gt;(statistiques retours)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="930" width="240" height="60" as="geometry"/></mxCell>
-        <mxCell id="u14" value="Changer statut retour&lt;br&gt;(Workflow)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="680" width="220" height="60" as="geometry"/></mxCell>
+        <mxCell id="u10" value="Approuver un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="600" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u11" value="Rejeter un retour" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="675" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u12" value="Rembourser un client" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="750" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u13" value="Consulter le tableau de bord" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="825" width="240" height="50" as="geometry"/></mxCell>
+        <mxCell id="u14" value="Changer le statut" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="625" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u15" value="Mettre à jour le cache" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="740" y="720" width="200" height="50" as="geometry"/></mxCell>
 
-        <!-- Événements Kafka reçus -->
-        <mxCell id="u15" value="Recevoir événement&lt;br&gt;paiement confirmé" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="800" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u16" value="Recevoir événement&lt;br&gt;livraison confirmée" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="900" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u17" value="Mettre à jour cache&lt;br&gt;commandes (MongoDB)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="1000" width="240" height="60" as="geometry"/></mxCell>
-
-        <!-- Associations Client -->
         <mxCell id="l1" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u1"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l2" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u5"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l3" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l4" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u7"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l5" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u8"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l6" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u9"><mxGeometry relative="1" as="geometry"/></mxCell>
-
-        <!-- Associations Gestionnaire -->
         <mxCell id="l7" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u10"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l8" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u11"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l9" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l10" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u13"><mxGeometry relative="1" as="geometry"/></mxCell>
 
-        <!-- include -->
         <mxCell id="i1" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="i2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u1" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="i3" value="«extend»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u1" target="u4"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="i4" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u10" target="u14"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="i5" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u11" target="u14"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="i6" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u12" target="u14"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i7" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u15" target="u17"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i8" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u16" target="u17"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="i7" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ex1" target="u15"><mxGeometry relative="1" as="geometry"/></mxCell>
 
-        <!-- Systèmes externes -->
         <mxCell id="e1" style="endArrow=none;html=1;" edge="1" parent="1" source="ex2" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="e2" style="endArrow=none;html=1;" edge="1" parent="1" source="ex2" target="u8"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e3" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u15"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e4" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u16"><mxGeometry relative="1" as="geometry"/></mxCell>
       </root>
     </mxGraphModel>
   </diagram>

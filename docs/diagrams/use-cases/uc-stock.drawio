@@ -1,47 +1,29 @@
 <mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
   <diagram id="uc-stock" name="UC - Stock Service">
-    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0"/><mxCell id="1" parent="0"/>
-        <mxCell id="t" value="Diagramme de cas d'utilisation — Microservice Stock (Symfony)" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1200" height="30" as="geometry"/></mxCell>
-        <mxCell id="sys" value="Microservice Stock (Symfony / MySQL)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="1000" height="980" as="geometry"/></mxCell>
+        <mxCell id="t" value="Diagramme de cas d'utilisation — Microservice Stock (Symfony)" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="15" width="1000" height="30" as="geometry"/></mxCell>
+        <mxCell id="sys" value="Microservice Stock" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=14;fontStyle=1;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="320" y="60" width="720" height="800" as="geometry"/></mxCell>
 
-        <mxCell id="ac1" value="Administrateur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="100" y="300" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ac2" value="Microservice&lt;br&gt;Produit&lt;br&gt;&lt;i&gt;«système»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="100" y="750" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ex1" value="Kafka&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1460" y="350" width="40" height="80" as="geometry"/></mxCell>
-        <mxCell id="ex2" value="Clients connectés&lt;br&gt;&lt;i&gt;«WebSocket»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1460" y="600" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac1" value="Administrateur" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;" vertex="1" parent="1"><mxGeometry x="120" y="300" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ac2" value="Microservice Produit" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="120" y="680" width="40" height="80" as="geometry"/></mxCell>
+        <mxCell id="ex1" value="Messagerie&lt;br&gt;&lt;i&gt;«système externe»&lt;/i&gt;" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1200" y="300" width="40" height="80" as="geometry"/></mxCell>
 
-        <!-- UC Stock CRUD -->
-        <mxCell id="u1" value="Consulter le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="90" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u2" value="Ajouter un produit&lt;br&gt;au stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="170" width="200" height="60" as="geometry"/></mxCell>
-        <mxCell id="u3" value="Modifier un stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="260" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u4" value="Supprimer un stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="340" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u5" value="Ajouter un lot&lt;br&gt;d'approvisionnement" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="420" width="220" height="60" as="geometry"/></mxCell>
+        <mxCell id="u1" value="Consulter le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="400" y="90" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u2" value="Ajouter un produit" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="400" y="165" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u3" value="Modifier un stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="400" y="240" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u4" value="Supprimer un stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="400" y="315" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u5" value="Approvisionner un lot" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="390" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u6" value="Importer le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="465" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u7" value="Exporter le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="540" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u8" value="Gérer les promotions" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="615" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u9" value="Synchroniser le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="690" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u10" value="Consulter l'historique" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="765" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u11" value="Notifier les clients" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="720" y="165" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u12" value="Publier une promotion" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="720" y="615" width="200" height="50" as="geometry"/></mxCell>
+        <mxCell id="u13" value="Récupérer le stock" style="ellipse;whiteSpace=wrap;html=1;fontSize:12;" vertex="1" parent="1"><mxGeometry x="400" y="840" width="200" height="50" as="geometry"/></mxCell>
 
-        <!-- UC CSV -->
-        <mxCell id="u6" value="Importer stock (CSV)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="510" width="200" height="50" as="geometry"/></mxCell>
-        <mxCell id="u7" value="Exporter stock (CSV)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="590" width="200" height="50" as="geometry"/></mxCell>
-
-        <!-- UC Promotions -->
-        <mxCell id="u8" value="Gérer les promotions&lt;br&gt;(CRUD)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="670" width="200" height="60" as="geometry"/></mxCell>
-        <mxCell id="u9" value="Importer promotions&lt;br&gt;(CSV)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="760" width="200" height="60" as="geometry"/></mxCell>
-
-        <!-- UC API -->
-        <mxCell id="u10" value="Récupérer stock&lt;br&gt;par SKU (API)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="850" width="200" height="60" as="geometry"/></mxCell>
-        <mxCell id="u11" value="Consulter historique&lt;br&gt;des mouvements" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="380" y="940" width="220" height="60" as="geometry"/></mxCell>
-
-        <!-- UC Kafka (inclus) -->
-        <mxCell id="u12" value="Publier mise à jour&lt;br&gt;stock (Kafka)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="170" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u13" value="Publier alerte&lt;br&gt;stock faible" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="260" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u14" value="Publier rupture&lt;br&gt;de stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="350" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u15" value="Publier retour&lt;br&gt;en stock" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="440" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u16" value="Synchroniser&lt;br&gt;manuellement (Kafka)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="530" width="220" height="60" as="geometry"/></mxCell>
-        <mxCell id="u17" value="Publier nouvelle&lt;br&gt;promotion (Kafka)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="670" width="220" height="60" as="geometry"/></mxCell>
-
-        <!-- Notifications temps réel -->
-        <mxCell id="u18" value="Notifier clients&lt;br&gt;(temps réel WebSocket)" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1"><mxGeometry x="840" y="770" width="240" height="60" as="geometry"/></mxCell>
-
-        <!-- Associations Admin -->
         <mxCell id="l1" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u1"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l2" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l3" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
@@ -51,22 +33,15 @@
         <mxCell id="l7" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u7"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l8" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u8"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="l9" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u9"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="l10" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u11"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="l11" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u16"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="l12" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l10" style="endArrow=none;html=1;" edge="1" parent="1" source="ac1" target="u10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="l11" style="endArrow=none;html=1;" edge="1" parent="1" source="ac2" target="u13"><mxGeometry relative="1" as="geometry"/></mxCell>
 
-        <!-- include -->
-        <mxCell id="i1" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u2" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u3" target="u13"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i3" value="«extend»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u3" target="u14"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i4" value="«extend»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u3" target="u15"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i5" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u8" target="u17"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="i6" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u12" target="u18"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="i1" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u2" target="u11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="i2" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u3" target="u11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="i3" value="«include»" style="endArrow=open;endSize=10;html=1;dashed=1;dashPattern=8 4;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="u8" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
 
-        <!-- Systèmes externes -->
-        <mxCell id="e1" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e2" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u17"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e3" style="endArrow=none;html=1;" edge="1" parent="1" source="ex2" target="u18"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e1" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="endArrow=none;html=1;" edge="1" parent="1" source="ex1" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
       </root>
     </mxGraphModel>
   </diagram>
