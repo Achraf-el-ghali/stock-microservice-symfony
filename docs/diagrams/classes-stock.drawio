@@ -60,7 +60,7 @@
           <mxGeometry y="26" width="300" height="94" as="geometry"/>
         </mxCell>
 
-        <mxCell id="bdd" value="Base de Données (PostgreSQL)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="bdd" value="Base de Données (MySQL)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="500" y="700" width="320" height="100" as="geometry"/>
         </mxCell>
         <mxCell id="bdd_a" value="+ Stockage des produits et lots&#xa;+ Historique des mouvements&#xa;+ Gestion des promotions" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
