@@ -1,65 +1,139 @@
 <mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
-  <diagram id="cls-paiement" name="Modélisation - Paiement_Service">
-    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+  <diagram id="cls-paiement" name="Modélisation - Paiement_Services">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
       <root>
         <mxCell id="0"/><mxCell id="1" parent="0"/>
-        <mxCell id="title" value="Modélisation du Microservice : Gestion des Paiements (Payment_Service)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1200" height="30" as="geometry"/></mxCell>
-        <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1320" height="800" as="geometry"/></mxCell>
+        <mxCell id="title" value="Modélisation du Microservice : Paiement, Livraison &amp; Vidange (Services_Payment)" style="text;html=1;align=center;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1"><mxGeometry x="100" y="10" width="1600" height="30" as="geometry"/></mxCell>
+        <mxCell id="boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC6600;strokeWidth=2;arcSize=3;" vertex="1" parent="1"><mxGeometry x="40" y="50" width="1720" height="1300" as="geometry"/></mxCell>
 
-        <mxCell id="gate" value="Passerelle de Paiement (Stripe / PayPal)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="440" y="80" width="320" height="130" as="geometry"/>
+        <mxCell id="order" value="Commande (Order)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="340" height="250" as="geometry"/>
         </mxCell>
-        <mxCell id="gate_a" value="+CreerSessionDePaiement()&#xa;   → crée une session de paiement sécurisée&#xa;+ValiderTransaction()&#xa;   → vérifie que le paiement est bien reçu&#xa;-CleApi : Secret" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="gate">
-          <mxGeometry y="26" width="320" height="104" as="geometry"/>
+        <mxCell id="order_a" value="-orderNumber : string {numéro unique}&#xa;-clientId : string {identifiant du client}&#xa;-totalAmount : double {montant total}&#xa;-shippingAddress : string {adresse de livraison}&#xa;-city : string {ville}&#xa;-phoneNumber : string&#xa;-status : OrderStatus {état de la commande}&#xa;-paymentIntentId : string {réf. Stripe}&#xa;-createdAt : LocalDateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="order">
+          <mxGeometry y="26" width="340" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="order_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#6C8EBF;" vertex="1" parent="order">
+          <mxGeometry y="186" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="order_m" value="«enumeration» OrderStatus :&#xa;PENDING, PAID, FAILED, CANCELLED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="order">
+          <mxGeometry y="194" width="340" height="56" as="geometry"/>
         </mxCell>
 
-        <mxCell id="svc" value="Gestion des Paiements" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="80" y="280" width="280" height="170" as="geometry"/>
+        <mxCell id="item" value="Article Commandé (OrderItem)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="420" width="340" height="180" as="geometry"/>
         </mxCell>
-        <mxCell id="svc_a" value="+InitierPaiement()&#xa;   → démarre le processus de paiement&#xa;+ConfirmerPaiement()&#xa;   → confirme après validation Stripe&#xa;+RembourserPaiement()&#xa;   → lance un remboursement&#xa;+VerifierStatut()&#xa;   → consulte l'état du paiement" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="svc">
-          <mxGeometry y="26" width="280" height="144" as="geometry"/>
+        <mxCell id="item_a" value="-sku : string {référence produit}&#xa;-price : double {prix unitaire}&#xa;-quantity : int {quantité}&#xa;-type : string {DELIVERY ou VIDANGE}&#xa;-vidangeType : string {garage ou domicile}&#xa;-scheduledAt : LocalDateTime {date prévue}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="item">
+          <mxGeometry y="26" width="340" height="154" as="geometry"/>
         </mxCell>
 
         <mxCell id="pay" value="Paiement (Payment)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="480" y="280" width="320" height="190" as="geometry"/>
+          <mxGeometry x="520" y="80" width="320" height="200" as="geometry"/>
         </mxCell>
-        <mxCell id="pay_a" value="-ID_Commande : string&#xa;-Montant : decimal&#xa;-Devise : string (MAD)&#xa;-Statut : Enum (Réussi, Échoué, En cours)&#xa;-DatePaiement : DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
-          <mxGeometry y="26" width="320" height="90" as="geometry"/>
+        <mxCell id="pay_a" value="-orderId : long {commande associée}&#xa;-amount : double {montant payé}&#xa;-paymentMethod : PaymentMethod&#xa;-status : PaymentStatus&#xa;-transactionId : string {réf. Stripe unique}&#xa;-createdAt : LocalDateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
+          <mxGeometry y="26" width="320" height="110" as="geometry"/>
         </mxCell>
         <mxCell id="pay_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#6C8EBF;" vertex="1" parent="pay">
+          <mxGeometry y="136" width="320" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="pay_m" value="«enum» PaymentStatus : PENDING, SUCCESS, FAILED&#xa;«enum» PaymentMethod : CARD, PAYPAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
+          <mxGeometry y="144" width="320" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="liv" value="Livraison" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="960" y="80" width="340" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="liv_a" value="-orderId : long {commande liée}&#xa;-status : string {PENDING / SHIPPED / DELIVERED}&#xa;-address : string {adresse de livraison}&#xa;-city : string&#xa;-deliveryDate : LocalDateTime&#xa;-latitude : double {position GPS}&#xa;-longitude : double&#xa;-deliveryPrice : double {frais de livraison}&#xa;-livreurId : string {livreur assigné}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="liv">
+          <mxGeometry y="26" width="340" height="194" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="livtask" value="Tâche de Livraison (LivraisonTask)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="960" y="380" width="380" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="livtask_a" value="-orderId : long&#xa;-orderItemId : long&#xa;-deliveryAddress : string&#xa;-city : string&#xa;-latitude : double {position actuelle du livreur}&#xa;-longitude : double&#xa;-status : TaskStatus&#xa;-assignedLivreurId : string&#xa;-clientId : string&#xa;-notifiedArrival : bool {SMS envoyé ?}&#xa;-createdAt : LocalDateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="livtask">
+          <mxGeometry y="26" width="380" height="190" as="geometry"/>
+        </mxCell>
+        <mxCell id="livtask_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#82B366;" vertex="1" parent="livtask">
+          <mxGeometry y="216" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="livtask_m" value="«enum» TaskStatus :&#xa;PENDING_ASSIGNMENT, ASSIGNING, ASSIGNED, DELIVERING, DELIVERED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="livtask">
+          <mxGeometry y="224" width="380" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="vidtask" value="Tâche de Vidange (VidangeTask)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="960" y="740" width="380" height="310" as="geometry"/>
+        </mxCell>
+        <mxCell id="vidtask_a" value="-orderId : long&#xa;-clientId : string&#xa;-orderItemId : long&#xa;-sku : string {produit huile à utiliser}&#xa;-quantity : int&#xa;-address : string&#xa;-city : string&#xa;-type : string {garage ou domicile}&#xa;-scheduledAt : LocalDateTime {date planifiée}&#xa;-status : TaskStatus&#xa;-technicienId : string {technicien assigné}&#xa;-latitude : double {position du technicien}&#xa;-longitude : double&#xa;-notifiedArrival : bool {SMS envoyé ?}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="vidtask">
+          <mxGeometry y="26" width="380" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="vidtask_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#D6B656;" vertex="1" parent="vidtask">
+          <mxGeometry y="246" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="vidtask_m" value="«enum» TaskStatus :&#xa;PENDING_ASSIGNMENT, ASSIGNING, ASSIGNED, PROCESSING, DONE" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="vidtask">
+          <mxGeometry y="254" width="380" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="outbox" value="Outbox (Événements à publier)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#CC6600;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="520" y="420" width="320" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="outbox_a" value="-eventType : string {type d'événement}&#xa;-payload : text {données JSON}&#xa;-status : OutboxStatus&#xa;-createdAt : LocalDateTime&#xa;-sentAt : LocalDateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="outbox">
+          <mxGeometry y="26" width="320" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="outbox_s" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=#CC6600;" vertex="1" parent="outbox">
           <mxGeometry y="116" width="320" height="8" as="geometry"/>
         </mxCell>
-        <mxCell id="pay_m" value="+initier() : void&#xa;+confirmer() : void&#xa;+rembourser() : void&#xa;+verifierStatut() : PaymentStatus" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="pay">
-          <mxGeometry y="124" width="320" height="66" as="geometry"/>
+        <mxCell id="outbox_m" value="«enum» OutboxStatus : PENDING, SENT, FAILED&#xa;→ Garantit la fiabilité des messages Kafka" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="outbox">
+          <mxGeometry y="124" width="320" height="46" as="geometry"/>
         </mxCell>
 
-        <mxCell id="trans" value="Transaction" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="940" y="300" width="300" height="130" as="geometry"/>
+        <mxCell id="bdd" value="Base de Données (MySQL)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="460" y="700" width="380" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="trans_a" value="-ReferenceExterne : string {ID Stripe}&#xa;-ModePaiement : string {carte, virement}&#xa;-ReponsePasserelle : string {succès/échec}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="trans">
-          <mxGeometry y="26" width="300" height="104" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="bdd" value="Base de Données Paiement" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="480" y="600" width="320" height="110" as="geometry"/>
-        </mxCell>
-        <mxCell id="bdd_a" value="+ Historique des Paiements&#xa;+ Logs des Transactions&#xa;+ Traçabilité complète des opérations" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
-          <mxGeometry y="26" width="320" height="84" as="geometry"/>
+        <mxCell id="bdd_a" value="+ Commandes et articles commandés&#xa;+ Paiements et transactions&#xa;+ Tâches de livraison et vidange&#xa;+ Événements Outbox (Kafka)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="bdd">
+          <mxGeometry y="26" width="380" height="94" as="geometry"/>
         </mxCell>
 
-        <mxCell id="r1" value="&lt;font color='#CC6600'&gt;utilise &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="gate"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="r2" value="&lt;font color='#CC6600'&gt;gère &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="svc" target="pay"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="passerelle" value="Passerelle de Paiement (Stripe)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;collapsible=0;marginBottom=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#000000;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="520" y="900" width="320" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="pass_a" value="+CreerSessionPaiement()&#xa;+ValiderWebhook()&#xa;-CleApi : Secret" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#000000;fontSize=11;" vertex="1" parent="passerelle">
+          <mxGeometry y="26" width="320" height="74" as="geometry"/>
+        </mxCell>
 
-        <mxCell id="r3" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="trans"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="r3a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="805" y="355" width="20" height="20" as="geometry"/></mxCell>
-        <mxCell id="r3b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="920" y="355" width="20" height="20" as="geometry"/></mxCell>
-        <mxCell id="r3v" value="&lt;font color='#FF0000'&gt;a &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="855" y="335" width="30" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1" style="endArrow=diamondThin;endFill=1;endSize=14;html=1;strokeColor=#000000;" edge="1" parent="1" source="item" target="order"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="1..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="175" y="395" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="195" y="335" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1v" value="&lt;font color='#FF0000'&gt;contient &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="95" y="360" width="80" height="20" as="geometry"/></mxCell>
 
-        <mxCell id="r4" style="endArrow=diamondThin;endFill=0;endSize=14;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="bdd"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="r4v" value="&lt;font color='#FF0000'&gt;sauvegarde&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="570" y="530" width="80" height="20" as="geometry"/></mxCell>
-        <mxCell id="r4a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="635" y="480" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="pay" target="order"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r2a" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="490" y="135" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="405" y="135" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2v" value="&lt;font color='#FF0000'&gt;&lt; paie&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="420" y="115" width="60" height="20" as="geometry"/></mxCell>
 
-        <mxCell id="note1" value="&lt;font color='#008800'&gt;&lt;i&gt;Chaque paiement génère exactement&lt;br&gt;une transaction avec la passerelle.&lt;br&gt;La référence externe permet de tracer&lt;br&gt;le paiement chez Stripe/PayPal.&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="940" y="450" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="r3" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="liv" target="order"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3a" value="0..1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="890" y="155" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="405" y="175" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3v" value="&lt;font color='#FF0000'&gt;livre &gt;&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="600" y="175" width="60" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r4" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="livtask" target="order"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r4a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="930" y="420" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r4b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="350" y="290" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r4v" value="&lt;font color='#FF0000'&gt;&lt; assignée pour&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="550" y="350" width="110" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r5" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1" source="vidtask" target="order"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r5a" value="0..*" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="930" y="800" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r5b" value="1" style="text;html=1;fontSize=11;fontColor=#0000FF;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="350" y="310" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r5v" value="&lt;font color='#FF0000'&gt;&lt; planifiée pour&lt;/font&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1"><mxGeometry x="550" y="680" width="110" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r6" style="endArrow=diamondThin;endFill=0;endSize=14;html=1;strokeColor=#000000;" edge="1" parent="1" source="order" target="bdd"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r6v" value="&lt;font color='#FF0000'&gt;sauvegarde&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="310" y="640" width="80" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r7" value="&lt;font color='#CC6600'&gt;utilise &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="pay" target="passerelle"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="r8" value="&lt;font color='#CC6600'&gt;publie via &gt;&lt;/font&gt;" style="endArrow=open;endSize=10;html=1;dashed=1;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="outbox" target="bdd"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="note1" value="&lt;font color='#008800'&gt;&lt;i&gt;Une commande peut contenir des articles&lt;br&gt;de type DELIVERY (produit livré) ou&lt;br&gt;VIDANGE (vidange à domicile/garage).&lt;br&gt;&lt;br&gt;Le système assigne automatiquement&lt;br&gt;un livreur ou un technicien disponible.&lt;br&gt;&lt;br&gt;Le pattern Outbox garantit que les&lt;br&gt;événements Kafka sont envoyés de&lt;br&gt;manière fiable (pas de perte de données).&lt;/i&gt;&lt;/font&gt;" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="700" width="300" height="180" as="geometry"/>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
