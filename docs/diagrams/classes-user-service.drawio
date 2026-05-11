@@ -1,0 +1,29 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-user" name="Classes - User Service">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t" value="Diagramme de classes — Microservice User Service" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="150" y="10" width="900" height="30" as="geometry"/></mxCell>
+
+        <mxCell id="user" value="&lt;b&gt;&lt;i&gt;User&lt;/i&gt;&lt;/b&gt;&lt;br&gt;{abstract}&lt;hr size=1&gt;&lt;div align='left'&gt;-Id : int&lt;br&gt;-Nom : string&lt;br&gt;-Prenom : string&lt;br&gt;-Username : string&lt;br&gt;-Email : string&lt;br&gt;-PasswordHash : string&lt;br&gt;-Role : UserRole&lt;br&gt;-CreatedAt : DateTime&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="440" y="80" width="220" height="250" as="geometry"/></mxCell>
+
+        <mxCell id="client" value="&lt;b&gt;Client&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-Bloque : bool&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="280" y="460" width="180" height="100" as="geometry"/></mxCell>
+
+        <mxCell id="admin" value="&lt;b&gt;Admin&lt;/b&gt;&lt;hr size=1&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="560" y="460" width="180" height="80" as="geometry"/></mxCell>
+
+        <mxCell id="extlogin" value="&lt;b&gt;UserExternalLogin&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-Id : int&lt;br&gt;-Provider : string&lt;br&gt;-ProviderUserId : string&lt;br&gt;-UserId : int&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="820" y="120" width="240" height="160" as="geometry"/></mxCell>
+
+        <mxCell id="roleenum" value="&lt;b&gt;«enumeration»&lt;br&gt;UserRole&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;Admin = 1&lt;br&gt;Client = 2&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="100" y="120" width="180" height="120" as="geometry"/></mxCell>
+
+        <mxCell id="g1" style="endArrow=block;endFill=0;endSize=16;html=1;" edge="1" parent="1" source="client" target="user"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g2" style="endArrow=block;endFill=0;endSize=16;html=1;" edge="1" parent="1" source="admin" target="user"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="r1" style="endArrow=none;html=1;fontSize=10;" edge="1" parent="1" source="user" target="extlogin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="665" y="180" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="&lt;font color='#FF0000'&gt;0..*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="790" y="180" width="30" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" style="endArrow=open;endSize=10;html=1;dashed=1;fontSize=10;" edge="1" parent="1" source="user" target="roleenum"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

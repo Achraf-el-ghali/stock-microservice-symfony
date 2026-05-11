@@ -1,0 +1,32 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-stock" name="Classes - Microservice Stock">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t" value="Diagramme de classes — Microservice Stock" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="150" y="10" width="900" height="30" as="geometry"/></mxCell>
+
+        <mxCell id="stk" value="&lt;b&gt;Stock&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-id : int&lt;br&gt;-sku : string {unique}&lt;br&gt;-quantity : int&lt;br&gt;-price : float&lt;br&gt;-isActive : bool&lt;/div&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;+getFinalPrice() : float&lt;br&gt;+isInStock() : bool&lt;br&gt;+getStockStatus() : string&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="440" y="60" width="260" height="240" as="geometry"/></mxCell>
+
+        <mxCell id="lot" value="&lt;b&gt;StockLot&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-id : int&lt;br&gt;-sku : string&lt;br&gt;-quantityInitial : int&lt;br&gt;-quantityRemaining : int&lt;br&gt;-purchasePrice : float&lt;br&gt;-sellingPrice : float&lt;br&gt;-dateEntry : DateTime&lt;br&gt;-importReference : string&lt;br&gt;-createdAt : DateTime&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="60" y="60" width="260" height="270" as="geometry"/></mxCell>
+
+        <mxCell id="promo" value="&lt;b&gt;Promotion&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-id : int&lt;br&gt;-description : string&lt;br&gt;-type : string&lt;br&gt;-value : float&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="840" y="80" width="240" height="150" as="geometry"/></mxCell>
+
+        <mxCell id="mvt" value="&lt;b&gt;StockMovement&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-id : int&lt;br&gt;-sku : string&lt;br&gt;-lotId : int&lt;br&gt;-type : string {IN, OUT}&lt;br&gt;-quantity : int&lt;br&gt;-source : string&lt;br&gt;-createdAt : DateTime&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="60" y="440" width="260" height="220" as="geometry"/></mxCell>
+
+        <mxCell id="r1" style="endArrow=none;html=1;fontSize=10;" edge="1" parent="1" source="stk" target="lot"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="415" y="160" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="&lt;font color='#FF0000'&gt;0..*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="325" y="160" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1n" value="contient" style="text;html=1;fontSize=10;fontStyle=0;" vertex="1" parent="1"><mxGeometry x="350" y="140" width="60" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" style="endArrow=none;html=1;fontSize=10;" edge="1" parent="1" source="stk" target="promo"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r2a" value="&lt;font color='#FF0000'&gt;0..*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="705" y="140" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r2b" value="&lt;font color='#FF0000'&gt;0..*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="810" y="140" width="35" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r3" style="endArrow=none;html=1;fontSize=10;" edge="1" parent="1" source="stk" target="mvt"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3a" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="455" y="310" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3b" value="&lt;font color='#FF0000'&gt;0..*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="325" y="440" width="35" height="20" as="geometry"/></mxCell>
+        <mxCell id="r3n" value="enregistre" style="text;html=1;fontSize=10;fontStyle=0;" vertex="1" parent="1"><mxGeometry x="350" y="380" width="70" height="20" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

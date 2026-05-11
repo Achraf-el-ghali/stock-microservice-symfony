@@ -1,0 +1,25 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-retours" name="Classes - Microservice Retours">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t" value="Diagramme de classes — Microservice Retours" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="150" y="10" width="900" height="30" as="geometry"/></mxCell>
+
+        <mxCell id="ret" value="&lt;b&gt;ProductReturn&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-id : int&lt;br&gt;-orderReference : string&lt;br&gt;-sku : string&lt;br&gt;-quantity : int&lt;br&gt;-status : ReturnStatus&lt;br&gt;-condition : ReturnCondition&lt;br&gt;-reason : string&lt;br&gt;-imageData : text&lt;br&gt;-createdAt : DateTimeImmutable&lt;br&gt;-updatedAt : DateTimeImmutable&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="80" y="60" width="280" height="290" as="geometry"/></mxCell>
+
+        <mxCell id="cache" value="&lt;b&gt;OrderCache&lt;/b&gt;&lt;br&gt;{MongoDB}&lt;hr size=1&gt;&lt;div align='left'&gt;-id : string (orderNumber)&lt;br&gt;-products : array&lt;br&gt;-receivedAt : DateTimeImmutable&lt;br&gt;-source : string&lt;br&gt;-isPaid : bool&lt;br&gt;-isDelivered : bool&lt;br&gt;-totalAmount : float&lt;br&gt;-customerEmail : string&lt;/div&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;+getQuantityForSku(sku) : int&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="520" y="60" width="300" height="290" as="geometry"/></mxCell>
+
+        <mxCell id="status" value="&lt;b&gt;«enumeration»&lt;br&gt;ReturnStatus&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;PENDING&lt;br&gt;APPROVED&lt;br&gt;REJECTED&lt;br&gt;REFUNDED&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="80" y="440" width="200" height="150" as="geometry"/></mxCell>
+
+        <mxCell id="cond" value="&lt;b&gt;«enumeration»&lt;br&gt;ReturnCondition&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;NEW&lt;br&gt;USED&lt;br&gt;DAMAGED&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="360" y="440" width="200" height="140" as="geometry"/></mxCell>
+
+        <mxCell id="r1" value="concerne" style="endArrow=none;html=1;fontSize=10;" edge="1" parent="1" source="ret" target="cache"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="&lt;font color='#FF0000'&gt;*&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="365" y="180" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="495" y="180" width="20" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" style="endArrow=open;endSize=10;html=1;dashed=1;" edge="1" parent="1" source="ret" target="status"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r3" style="endArrow=open;endSize=10;html=1;dashed=1;" edge="1" parent="1" source="ret" target="cond"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

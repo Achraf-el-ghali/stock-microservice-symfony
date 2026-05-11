@@ -1,0 +1,27 @@
+<mxfile host="app.diagrams.net" modified="2026-05-11" agent="Kiro" version="24.7.17" type="device">
+  <diagram id="cls-paiement" name="Classes - Paiement et Services">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="t" value="Diagramme de classes — Microservice Paiement &amp; Services" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="150" y="10" width="900" height="30" as="geometry"/></mxCell>
+
+        <mxCell id="pay" value="&lt;b&gt;Payment&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-ID_Commande : string&lt;br&gt;-Montant : decimal&lt;br&gt;-Devise : string (MAD)&lt;br&gt;-Statut : PaymentStatus&lt;br&gt;-DatePaiement : DateTime&lt;/div&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;+initier() : void&lt;br&gt;+confirmer() : void&lt;br&gt;+rembourser() : void&lt;br&gt;+verifierStatut() : PaymentStatus&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="420" y="60" width="300" height="280" as="geometry"/></mxCell>
+
+        <mxCell id="trans" value="&lt;b&gt;Transaction&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-ReferenceExterne : string&lt;br&gt;-ModePaiement : string&lt;br&gt;-ReponsePasserelle : string&lt;/div&gt;&lt;hr size=1&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="860" y="100" width="260" height="130" as="geometry"/></mxCell>
+
+        <mxCell id="gate" value="&lt;b&gt;Passerelle (Stripe/PayPal)&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;-CleApi : Secret&lt;/div&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;+CreerSessionDePaiement() : Session&lt;br&gt;+ValiderTransaction() : bool&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="80" y="100" width="280" height="150" as="geometry"/></mxCell>
+
+        <mxCell id="statut" value="&lt;b&gt;«enumeration»&lt;br&gt;PaymentStatus&lt;/b&gt;&lt;hr size=1&gt;&lt;div align='left'&gt;Réussi&lt;br&gt;Échoué&lt;br&gt;En cours&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="460" y="440" width="200" height="140" as="geometry"/></mxCell>
+
+        <mxCell id="r1" style="endArrow=none;html=1;" edge="1" parent="1" source="pay" target="trans"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="r1a" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="725" y="155" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1b" value="&lt;font color='#FF0000'&gt;1&lt;/font&gt;" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="835" y="155" width="20" height="20" as="geometry"/></mxCell>
+        <mxCell id="r1n" value="a" style="text;html=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="780" y="135" width="20" height="20" as="geometry"/></mxCell>
+
+        <mxCell id="r2" value="utilise" style="endArrow=open;endSize=10;html=1;dashed=1;fontSize=10;" edge="1" parent="1" source="pay" target="gate"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="r3" style="endArrow=open;endSize=10;html=1;dashed=1;" edge="1" parent="1" source="pay" target="statut"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
